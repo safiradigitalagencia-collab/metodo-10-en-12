@@ -1,0 +1,2468 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Método 10 en 12 — Retomá el Control</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,700&family=Barlow+Condensed:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --black: #0a0a0a;
+            --dark: #111111;
+            --dark2: #1a1a1a;
+            --dark3: #232323;
+            --red: #D62828;
+            --red-hot: #FF2020;
+            --red-dark: #a01e1e;
+            --gold: #C9A84C;
+            --gold-light: #e8c97a;
+            --white: #f5f0eb;
+            --white2: #d4cec7;
+            --gray: #888;
+            --gray-dark: #555;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Barlow', sans-serif;
+            font-size: 17px;
+            line-height: 1.65;
+            overflow-x: hidden;
+        }
+
+        /* ─── NOISE TEXTURE OVERLAY ─── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.5;
+        }
+
+        /* ─── TYPOGRAPHY ─── */
+        /* Nível 1: Label Superior */
+        .type-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            line-height: 1.2;
+            color: var(--gray);
+            display: block;
+        }
+
+        /* Nível 2: Títulos Principais */
+        .type-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            line-height: 1.05;
+        }
+
+        /* Nível 3: Texto Descritivo */
+        .type-desc {
+            font-family: 'Barlow', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        /* Nível 4: Bullets / Secundário */
+        .type-bullet {
+            font-family: 'Barlow', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .condensed {
+            font-family: 'Barlow Condensed', sans-serif;
+        }
+
+        /* ─── UTILITY ─── */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .container--wide {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .text-red {
+            color: var(--red);
+        }
+
+        .text-gold {
+            color: var(--gold);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* ─── STICKY NAV ─── */
+        .sticky-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 14px 24px;
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(214, 40, 40, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transform: translateY(-100%);
+            transition: transform 0.4s ease;
+        }
+
+        .sticky-nav.visible {
+            transform: translateY(0);
+        }
+
+        .sticky-nav__brand {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem;
+            letter-spacing: 0.05em;
+            color: var(--white);
+        }
+
+        .sticky-nav__brand span {
+            color: var(--red);
+        }
+
+        .btn-nav {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--white);
+            background: var(--red);
+            padding: 10px 22px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .btn-nav:hover {
+            background: var(--red-hot);
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            padding: 120px 24px 80px;
+            overflow: hidden;
+        }
+
+        .hero__bg {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(105deg, rgba(214, 40, 40, 0.12) 0%, transparent 50%),
+                linear-gradient(to bottom, rgba(10, 10, 10, 0.3) 0%, rgba(10, 10, 10, 0.85) 100%),
+                url('assets/hero_fitness_bg.png') center/cover no-repeat;
+            z-index: 0;
+        }
+
+        .hero__bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 70% 50%, rgba(214, 40, 40, 0.08) 0%, transparent 70%);
+        }
+
+        .hero__tag {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--red);
+            border: 1px solid rgba(214, 40, 40, 0.4);
+            display: inline-block;
+            padding: 6px 14px;
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 1;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .hero__headline {
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            max-width: 900px;
+            line-height: 1.05;
+            position: relative;
+            z-index: 1;
+            animation: fadeUp 0.9s ease 0.1s both;
+        }
+
+        .hero__headline em {
+            font-style: normal;
+            color: var(--red);
+            display: block;
+        }
+
+        .hero__sub {
+            font-size: clamp(1rem, 2vw, 1.15rem);
+            font-weight: 500;
+            color: var(--white2);
+            max-width: 600px;
+            margin-top: 16px;
+            position: relative;
+            z-index: 1;
+            animation: fadeUp 1s ease 0.2s both;
+        }
+
+        .hero__sub strong {
+            color: var(--white);
+        }
+
+        .hero__cta-group {
+            margin-top: 44px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+            animation: fadeUp 1s ease 0.4s both;
+        }
+
+        .hero__micro {
+            font-size: 0.82rem;
+            color: var(--gray);
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 1;
+            animation: fadeUp 1s ease 0.5s both;
+            margin-top: 20px;
+        }
+
+        /* ─── RESPONSIVE HERO ─── */
+        @media (max-width: 480px) {
+            .hero {
+                padding: 100px 20px 60px;
+                text-align: left;
+            }
+
+            .hero__headline {
+                font-size: 2.2rem;
+                line-height: 1.05;
+                margin-bottom: 8px;
+            }
+
+            .hero__sub {
+                font-size: 1.05rem;
+                margin-top: 16px;
+            }
+
+            .hero__tag {
+                font-size: 0.75rem;
+                margin-bottom: 20px;
+            }
+
+            .video-wrapper {
+                margin: 24px 0 0 0 !important;
+                border-radius: 8px;
+                width: 100%;
+                aspect-ratio: 16/9;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            }
+
+            .hero__cta-group {
+                margin-top: 24px;
+                justify-content: stretch;
+            }
+
+            .hero__cta-group .btn {
+                width: 100%;
+                text-align: center;
+                padding: 16px 20px;
+            }
+
+            .hero__micro {
+                font-size: 0.75rem;
+                text-align: left;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .hero {
+                padding: 140px 40px 100px;
+                align-items: center;
+                text-align: center;
+            }
+
+            .hero__headline {
+                font-size: 3.5rem;
+                max-width: 1000px;
+                line-height: 1.1;
+                margin-bottom: 8px;
+            }
+
+            .hero__headline em {
+                display: inline;
+            }
+
+            .hero__sub {
+                font-size: 1.15rem;
+                max-width: 760px;
+                margin: 0 auto;
+            }
+
+            .hero__tag {
+                margin-bottom: 32px;
+            }
+
+            .video-wrapper {
+                margin: 40px auto 0 !important;
+                max-width: 900px;
+                width: 100%;
+                border-radius: 12px;
+                aspect-ratio: 16/9;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            }
+
+            .hero__cta-group {
+                justify-content: center;
+            }
+
+            .hero__micro {
+                text-align: center;
+                margin: 24px auto 0;
+            }
+
+            .hero .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .hero__scroll {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero__scroll span {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gray);
+        }
+
+        .scroll-arrow {
+            width: 24px;
+            height: 24px;
+            border-right: 2px solid var(--red);
+            border-bottom: 2px solid var(--red);
+            transform: rotate(45deg);
+            animation: scrollBounce 1.6s ease-in-out infinite;
+        }
+
+        /* ─── BUTTONS ─── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .btn__arrow {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 0.65em;
+            transform: translateY(-2px);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.08);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover::after {
+            opacity: 1;
+        }
+
+        .btn--primary {
+            background: var(--red);
+            color: var(--white);
+            font-size: clamp(1.1rem, 3vw, 1.35rem);
+            padding: 14px 20px;
+        }
+
+        .btn--primary:hover {
+            background: var(--red-hot);
+            transform: translateY(-2px);
+        }
+
+        .btn--outline {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-size: clamp(1.1rem, 3vw, 1.35rem);
+            padding: 14px 20px;
+        }
+
+        .btn--outline:hover {
+            border-color: var(--white);
+        }
+
+        .btn--gold {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
+            color: var(--black);
+            font-size: clamp(1.1rem, 3vw, 1.35rem);
+            padding: 14px 20px;
+            box-shadow: 0 0 40px rgba(201, 168, 76, 0.3);
+        }
+
+        .btn--gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 60px rgba(201, 168, 76, 0.5);
+        }
+
+        /* ─── SECTION BASE ─── */
+        section {
+            position: relative;
+        }
+
+        .section-label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 0.72rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        /* ─── PAIN SECTION ─── */
+        .pain {
+            padding: 100px 0;
+            background: var(--dark);
+            border-top: 1px solid rgba(214, 40, 40, 0.15);
+            border-bottom: 1px solid rgba(214, 40, 40, 0.15);
+        }
+
+        .pain__intro {
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 600;
+            line-height: 1.4;
+            max-width: 660px;
+            margin-bottom: 60px;
+        }
+
+        .pain__intro em {
+            font-style: italic;
+            color: var(--white2);
+        }
+
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+        }
+
+        @media (max-width: 1024px) {
+            .pain-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+
+            .solution__grid {
+                grid-template-columns: 1fr !important;
+                gap: 48px !important;
+            }
+
+            .solution__mockup {
+                max-width: 460px !important;
+            }
+
+            .solution__footer-text {
+                text-align: center;
+            }
+        }
+
+        .pain-item {
+            background: var(--dark2);
+            padding: 32px 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .pain-item:hover {
+            background: var(--dark3);
+            border-color: rgba(214, 40, 40, 0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .pain-item__icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background: rgba(214, 40, 40, 0.1);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            color: var(--red);
+        }
+
+        .pain-item__text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--white);
+            line-height: 1.4;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .pain-item__sub {
+            font-size: 0.9rem;
+            color: var(--gray);
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .pain__bridge {
+            margin-top: 64px;
+            padding: 40px;
+            background: rgba(214, 40, 40, 0.06);
+            border: 1px solid rgba(214, 40, 40, 0.2);
+            font-style: italic;
+            color: var(--white);
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+            font-weight: 400;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        /* ─── AGITACIÓN ─── */
+        .agitation {
+            padding: 100px 0;
+            background: var(--black);
+        }
+
+        .agitation__statement {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-family: 'Bebas Neue', sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            line-height: 1;
+            color: var(--white2);
+            max-width: 720px;
+        }
+
+        .agitation__statement strong {
+            color: var(--white);
+            display: block;
+            font-weight: 400;
+        }
+
+        .agitation__list {
+            list-style: none;
+            margin-top: 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .agitation__list li {
+            padding: 28px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            line-height: 1.6;
+            font-weight: 500;
+            color: var(--white2);
+        }
+
+        .agitation__list li::before {
+            content: '×';
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            color: var(--red);
+            flex-shrink: 0;
+            line-height: 1;
+            margin-top: 2px;
+        }
+
+        /* ─── SOLUTION REVEAL ─── */
+        .solution {
+            padding: 100px 0;
+            background: var(--dark);
+            overflow: hidden;
+        }
+
+        .solution__grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 40px;
+            align-items: center;
+            margin-top: 56px;
+        }
+
+        .solution__image-col {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .solution__mockup {
+            width: 100%;
+            max-width: 650px;
+            display: block;
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6));
+            transition: transform 0.4s ease;
+        }
+
+        .solution__mockup:hover {
+            transform: translateY(-8px);
+        }
+
+        .solution__content-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .solution__benefits {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .benefit-card {
+            background: var(--dark2);
+            padding: 20px 24px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.03);
+            transition: transform 0.3s ease, border-color 0.3s;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(214, 40, 40, 0.2);
+        }
+
+        .benefit-card__icon {
+            font-size: 1.2rem;
+            color: var(--gold);
+            flex-shrink: 0;
+            background: rgba(201, 168, 76, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .benefit-card__text {
+            font-size: 1.1rem;
+            color: var(--white);
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .solution__footer-text {
+            margin-top: 32px;
+            font-style: italic;
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+
+        /* ─── VIDEO SECTION ─── */
+        .video-section {
+            padding: 80px 0;
+            background: var(--black);
+        }
+
+        .video-wrapper {
+            position: relative;
+            max-width: 720px;
+            margin: 0 auto;
+            aspect-ratio: 16/9;
+            background: var(--dark2);
+            border: 1px solid rgba(214, 40, 40, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .video-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(214, 40, 40, 0.05), transparent);
+        }
+
+        .video-play {
+            width: 80px;
+            height: 80px;
+            background: var(--red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .video-play:hover {
+            background: var(--red-hot);
+            transform: scale(1.1);
+        }
+
+        .video-play svg {
+            margin-left: 5px;
+        }
+
+        .video-label {
+            position: absolute;
+            bottom: 24px;
+            left: 24px;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+
+
+
+
+        /* ─── PILLARS ─── */
+        .pillars {
+            padding: 100px 0;
+            background: var(--dark);
+        }
+
+        .pillars__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            margin-top: 56px;
+        }
+
+        .pillar {
+            background: var(--dark2);
+            padding: 44px 36px;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.3s;
+        }
+
+        .pillar:hover {
+            background: var(--dark3);
+        }
+
+        .pillar::before {
+            content: attr(data-num);
+            position: absolute;
+            top: -10px;
+            right: 16px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 7rem;
+            color: rgba(214, 40, 40, 0.07);
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .pillar__icon {
+            font-size: 2.4rem;
+            margin-bottom: 20px;
+        }
+
+        .pillar__title {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+
+        .pillar__desc {
+            font-size: 0.95rem;
+            color: var(--white2);
+            line-height: 1.65;
+        }
+
+        .pillar__bullets {
+            list-style: none;
+            margin-top: 16px;
+        }
+
+        .pillar__bullets li {
+            font-size: 0.88rem;
+            color: var(--gray);
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pillar__bullets li::before {
+            content: '→';
+            color: var(--red);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* ─── TRANSFORMATION ─── */
+        .transformation {
+            padding: 100px 0;
+            background: var(--black);
+        }
+
+        .transformation__sub {
+            font-size: 1.05rem;
+            color: var(--white2);
+            max-width: 580px;
+            margin-top: 20px;
+            margin-bottom: 56px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3px;
+        }
+
+        .result-card {
+            aspect-ratio: 3/4;
+            background: var(--dark2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card__img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.85;
+            transition: opacity 0.4s, transform 0.4s;
+        }
+
+        .result-card:hover .result-card__img {
+            opacity: 1;
+            transform: scale(1.04);
+        }
+
+        .result-card__overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 24px 20px 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+        }
+
+        .result-card__name {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--white);
+        }
+
+        .result-card__result {
+            font-size: 0.8rem;
+            color: var(--gold);
+            margin-top: 2px;
+        }
+
+        /* Placeholder resultado */
+        .result-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--dark2), var(--dark3));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .result-placeholder__icon {
+            font-size: 2.5rem;
+            opacity: 0.3;
+        }
+
+        .result-placeholder__text {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gray-dark);
+        }
+
+        /* ─── BASE DEL RENDIMIENTO ─── */
+        .performance {
+            padding: 100px 0;
+            background: var(--dark);
+        }
+
+        .performance__grid {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .performance__image-col {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .performance__image {
+            max-width: 100%;
+            width: auto;
+            max-height: 500px;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            display: block;
+        }
+
+        .performance__title {
+            font-size: clamp(2.5rem, 4.5vw, 4rem);
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--white);
+            line-height: 1;
+            letter-spacing: 0.02em;
+            margin-bottom: 20px;
+        }
+
+        .performance__sub {
+            font-size: 1.1rem;
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 48px;
+        }
+
+        .performance__list {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            margin-bottom: 48px;
+        }
+
+        .performance__item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .performance__icon {
+            width: 54px;
+            height: 54px;
+            background: rgba(18, 18, 20, 0.5);
+            /* Fundo escuro */
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--red);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+        }
+
+        .performance__item-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 6px;
+        }
+
+        .performance__item-text {
+            font-size: 0.95rem;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+
+        .btn--neon {
+            background: #DDF469;
+            color: #0f0f11;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 0.05em;
+            padding: 16px 40px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(221, 244, 105, 0.15);
+            width: fit-content;
+        }
+
+        .btn--neon:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(221, 244, 105, 0.4);
+            background: #eef891;
+        }
+
+        @media (max-width: 1024px) {
+            .performance__grid {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .performance__image-col {
+                order: -1;
+            }
+        }
+
+        /* ─── COUNTRIES ─── */
+        .countries {
+            padding: 60px 0;
+            background: var(--black);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .countries__label {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .flags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px 40px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flag-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .flag-item:hover {
+            transform: translateY(-4px);
+        }
+
+        .flag-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+        }
+
+        .flag-item span {
+            font-size: 0.65rem;
+            font-family: 'Barlow Condensed', sans-serif;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray);
+        }
+
+        /* ─── PRICING ─── */
+        .pricing {
+            padding: 100px 0 120px;
+            background: var(--dark);
+        }
+
+        .pricing__intro {
+            font-size: 1.1rem;
+            color: var(--white2);
+            max-width: 560px;
+            margin-top: 16px;
+            margin-bottom: 64px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            align-items: end;
+        }
+
+        .pricing-card {
+            background: var(--dark2);
+            padding: 40px 32px;
+            position: relative;
+            transition: background 0.3s;
+        }
+
+        .pricing-card:hover {
+            background: var(--dark3);
+        }
+
+        .pricing-card--featured {
+            background: var(--dark3);
+            border-top: 3px solid var(--gold);
+            transform: scaleY(1.02);
+            transform-origin: bottom;
+        }
+
+        .pricing-card--featured:hover {
+            background: #2a2a2a;
+        }
+
+        .pricing-badge {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            background: var(--gold);
+            color: var(--black);
+            display: inline-block;
+            padding: 4px 10px;
+            margin-bottom: 20px;
+        }
+
+        .pricing-plan {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 8px;
+        }
+
+        .pricing-price {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4.5rem;
+            line-height: 1;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .pricing-price span {
+            font-size: 2rem;
+            color: var(--gray);
+            vertical-align: top;
+            margin-top: 12px;
+            display: inline-block;
+        }
+
+        .pricing-installment {
+            font-size: 0.88rem;
+            color: var(--gray);
+            margin-bottom: 28px;
+        }
+
+        .pricing-installment strong {
+            color: var(--white2);
+        }
+
+        .pricing-per {
+            font-size: 0.8rem;
+            color: var(--gold);
+            margin-bottom: 28px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 32px;
+        }
+
+        .pricing-features li {
+            font-size: 0.9rem;
+            color: var(--white2);
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--red);
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* ─── GUARANTEE ─── */
+        .guarantee {
+            padding: 80px 0;
+            background: var(--black);
+        }
+
+        .guarantee__box {
+            max-width: 680px;
+            margin: 0 auto;
+            border: 1px solid rgba(201, 168, 76, 0.3);
+            padding: 56px 48px;
+            text-align: center;
+            position: relative;
+        }
+
+        .guarantee__box::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(135deg, rgba(201, 168, 76, 0.1), transparent);
+            pointer-events: none;
+        }
+
+        .guarantee__badge {
+            width: 80px;
+            height: 80px;
+            background: rgba(201, 168, 76, 0.1);
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 28px;
+        }
+
+        .guarantee__title {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            margin-bottom: 16px;
+        }
+
+        .guarantee__text {
+            font-size: 1rem;
+            color: var(--white2);
+            line-height: 1.7;
+            max-width: 480px;
+            margin: 0 auto 24px;
+        }
+
+        .guarantee__footer {
+            font-size: 0.8rem;
+            color: var(--gray);
+            font-style: italic;
+        }
+
+
+
+        /* ─── FAQ ─── */
+        .faq {
+            padding: 100px 0;
+            background: var(--dark);
+        }
+
+        .faq__grid {
+            margin-top: 56px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .faq-item {
+            background: var(--dark2);
+        }
+
+        .faq-item__q {
+            width: 100%;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 24px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            text-align: left;
+            color: var(--white);
+            font-family: 'Barlow', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .faq-item__q:hover {
+            background: var(--dark3);
+        }
+
+        .faq-item__icon {
+            width: 24px;
+            height: 24px;
+            border: 1px solid rgba(214, 40, 40, 0.5);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--red);
+            transition: transform 0.3s;
+        }
+
+        .faq-item.open .faq-item__icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-item__a {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.4s ease, padding 0.3s;
+        }
+
+        .faq-item.open .faq-item__a {
+            max-height: 300px;
+        }
+
+        .faq-item__a-inner {
+            padding: 0 28px 24px;
+            font-size: 0.96rem;
+            color: var(--white2);
+            line-height: 1.7;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 20px;
+            margin-top: -4px;
+        }
+
+        /* ─── TRANSFORMATION ─── */
+        .transformation {
+            padding: 100px 0;
+            background: var(--black);
+        }
+
+        .transformation__sub {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-top: 16px;
+            text-align: center;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 56px;
+        }
+
+        .result-card {
+            background: var(--dark2);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(214, 40, 40, 0.2);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .result-card img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+        }
+
+        .result-card__overlay {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(18, 18, 20, 0.95) 0%, rgba(18, 18, 20, 0.7) 40%, transparent 100%);
+            padding: 40px 24px 24px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .result-card__result {
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: 0.02em;
+            text-align: center;
+        }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scrollBounce {
+
+            0%,
+            100% {
+                transform: rotate(45deg) translateY(0);
+            }
+
+            50% {
+                transform: rotate(45deg) translateY(6px);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── DIVIDER ─── */
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(214, 40, 40, 0.3), transparent);
+        }
+
+        /* ─── STAT BAR ─── */
+        .stat-bar {
+            background: rgba(214, 40, 40, 0.08);
+            border-top: 1px solid rgba(214, 40, 40, 0.15);
+            border-bottom: 1px solid rgba(214, 40, 40, 0.15);
+            padding: 36px 0;
+        }
+
+        .stat-bar__inner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 16px 48px;
+            border-right: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .stat:last-child {
+            border-right: none;
+        }
+
+        .stat__num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--red);
+            line-height: 1;
+        }
+
+        .stat__label {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-top: 6px;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 768px) {
+
+            .section-label,
+            .section-title,
+            .agitation__statement {
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .pain__intro {
+                text-align: left;
+            }
+
+            .performance__title,
+            .performance__sub {
+                text-align: center;
+            }
+
+            section {
+                padding-top: 64px !important;
+                padding-bottom: 64px !important;
+            }
+
+            .container,
+            .container--wide {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+
+            .section-title {
+                margin-bottom: 40px;
+            }
+
+            .pain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pillars__grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card--featured {
+                transform: none;
+            }
+
+            .results-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stat {
+                padding: 16px 24px;
+            }
+
+            .stat:nth-child(even),
+            .stat:nth-child(2) {
+                border-right: none;
+            }
+
+            .guarantee__box {
+                padding: 40px 24px;
+            }
+
+            .hero {
+                padding: 80px 24px 80px !important;
+            }
+
+            .pain__bridge {
+                padding: 28px 24px;
+            }
+
+            .pillar {
+                padding: 32px 24px;
+            }
+
+            .solution__grid {
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero__cta-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* ─── FINAL CTA ─── */
+        .final-cta {
+            padding: 120px 0;
+            background: linear-gradient(to bottom, var(--black), var(--dark));
+            text-align: center;
+        }
+
+        .final-cta__headline {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-family: 'Bebas Neue', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            line-height: 1;
+            margin-bottom: 24px;
+            color: var(--white);
+        }
+
+        .final-cta__sub {
+            font-size: 1.15rem;
+            color: var(--white2);
+            margin-bottom: 40px;
+        }
+
+        .final-cta__micro {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 24px;
+        }
+
+        /* ─── FOOTER ─── */
+        footer {
+            background: var(--dark);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px 24px;
+            text-align: center;
+        }
+
+        .footer__brand {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            letter-spacing: 0.05em;
+            color: var(--white2);
+            margin-bottom: 16px;
+        }
+
+        .footer__brand span {
+            color: var(--red);
+        }
+
+        .footer__copy {
+            font-size: 0.78rem;
+            color: var(--gray-dark);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer__disclaimer {
+            font-size: 0.7rem;
+            color: var(--gray-dark);
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            line-height: 1.5;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ─── STICKY NAV ─── -->
+    <nav class="sticky-nav" id="stickyNav">
+        <div class="sticky-nav__brand">MÉTODO <span>10 en 12</span></div>
+        <a href="#precio" class="btn btn-nav">Empezar Ahora</a>
+    </nav>
+
+
+
+    <!-- ═══════════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════════ -->
+    <section class="hero">
+        <div class="hero__bg"></div>
+        <div class="container">
+            <span class="type-label">Para hombres de 35+ años</span>
+            <h1 class="hero__headline type-title">
+                Eso que eras
+                <em>todavía está ahí.</em>
+                Solo necesita estructura.
+            </h1>
+            <p class="hero__sub type-desc">
+                Dejaste de entrenar. La vida pasó. El trabajo, la familia, el cansancio.<br />
+                <strong>Tenés 12 semanas para recuperar el cuerpo, la energía y la confianza que se fueron quedando
+                    atrás.</strong>
+            </p>
+            <div class="video-wrapper"
+                style="margin: 40px 0 0 0; position: relative; z-index: 1; animation: fadeUp 1s ease 0.3s both; cursor: pointer;"
+                onclick="this.innerHTML='<iframe src=\'https://www.youtube.com/embed/Umj3SHH425k?autoplay=1&mute=1&rel=0&modestbranding=1\' allow=\'autoplay; encrypted-media\' allowfullscreen style=\'position:absolute;top:0;left:0;width:100%;height:100%;border-radius:inherit;border:none;\'></iframe>'; this.onclick=null;">
+                <div class="video-play">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="white">
+                        <polygon points="5,3 19,12 5,21" />
+                    </svg>
+                </div>
+                <div class="video-label">MÉTODO 10 EN 12 — PRESENTACIÓN</div>
+            </div>
+            <div class="hero__cta-group">
+                <a href="#precio" class="btn btn--primary">Quiero retomar el control <span
+                        class="btn__arrow">→</span></a>
+            </div>
+            <p class="hero__micro">✓ Sin equipamiento obligatorio &nbsp;·&nbsp; ✓ Adaptado a tu rutina real
+                &nbsp;·&nbsp; ✓ Garantía de 7 días</p>
+        </div>
+        <div class="hero__scroll">
+            <span>Seguí leyendo</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+
+
+    <!-- ─── STAT BAR ─── -->
+    <div class="stat-bar">
+        <div class="stat-bar__inner container--wide">
+            <div class="stat">
+                <div class="stat__num">12</div>
+                <div class="stat__label">Semanas de programa</div>
+            </div>
+            <div class="stat">
+                <div class="stat__num">3</div>
+                <div class="stat__label">Pilares del método</div>
+            </div>
+            <div class="stat">
+                <div class="stat__num">+5000</div>
+                <div class="stat__label">Hombres en proceso</div>
+            </div>
+            <div class="stat">
+                <div class="stat__num">12</div>
+                <div class="stat__label">Países en Latam</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+       DOLOR — IDENTIFICACIÓN
+  ═══════════════════════════════════════════ -->
+    <section class="pain">
+        <div class="container--wide">
+            <span class="type-label reveal">El problema real</span>
+            <p class="pain__intro type-desc reveal">
+                No es que perdiste la disciplina.<br />
+                <em>Es que nadie te dio una estructura que funcione con la vida que tenés.</em>
+            </p>
+
+            <div class="pain-grid reveal">
+                <div class="pain-item">
+                    <div class="pain-item__icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="23 4 23 10 17 10"></polyline>
+                            <polyline points="1 20 1 14 7 14"></polyline>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                        </svg>
+                    </div>
+                    <p class="pain-item__text type-desc">Empezaste mil veces. Duró tres semanas.</p>
+                    <p class="pain-item__sub type-bullet">Motivación de enero que se evapora en febrero. El ciclo se
+                        repite hace
+                        años y cada intento fallido te pesa más que el anterior.</p>
+                </div>
+                <div class="pain-item">
+                    <div class="pain-item__icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="7" width="20" height="10" rx="2" ry="2"></rect>
+                            <line x1="22" y1="11" x2="22" y2="13"></line>
+                            <line x1="6" y1="12" x2="6" y2="12"></line>
+                        </svg>
+                    </div>
+                    <p class="pain-item__text type-desc">Cuando llegás a casa, ya no te queda nada.</p>
+                    <p class="pain-item__sub type-bullet">Trabajo, reuniones, familia, responsabilidades. Para cuando
+                        tenés un
+                        momento libre, el cuerpo dijo basta y el gimnasio quedó para mañana.</p>
+                </div>
+                <div class="pain-item">
+                    <div class="pain-item__icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                            <circle cx="12" cy="14" r="4"></circle>
+                            <line x1="12" y1="6" x2="12.01" y2="6"></line>
+                        </svg>
+                    </div>
+                    <p class="pain-item__text type-desc">Te mirás al espejo y no te reconocés.</p>
+                    <p class="pain-item__sub type-bullet">Ganaste barriga, perdiste músculo. Y lo que más duele no es el
+                        físico — es
+                        saber que te fuiste dejando para después sin darte cuenta.</p>
+                </div>
+                <div class="pain-item">
+                    <div class="pain-item__icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M16 16s-1.5-2-4-2-4 2-4 2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                    </div>
+                    <p class="pain-item__text type-desc">Probar todo sin resultados te desgasta.</p>
+                    <p class="pain-item__sub type-bullet">Dietas raras, rutinas de YouTube, suplementos carísimos. Nada
+                        funciona
+                        porque nada está diseñado para un hombre de 35+ con vida real.</p>
+                </div>
+            </div>
+
+            <div class="pain__bridge reveal">
+                "El problema no sos vos, el problema es que seguiste buscando soluciones de 25 años con el cuerpo, el
+                tiempo y la cabeza de los 35+. Eso termina acá."
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+       AGITACIÓN — EL COSTO DE NO ACTUAR
+  ═══════════════════════════════════════════ -->
+    <section class="agitation">
+        <div class="container">
+            <span class="type-label reveal">Lo que está en juego</span>
+            <p class="agitation__statement type-title reveal">
+                Cada día que pasa sin hacer nada tiene un costo
+            </p>
+
+            <ul class="agitation__list type-bullet reveal">
+                <li>La energía que perdiste no vuelve sola — y cada año que pasa, cuesta el doble recuperarla.</li>
+                <li>Tu autoconfianza depende de cómo te sentís en tu propio cuerpo. Eso afecta todo: el trabajo, la
+                    pareja, cómo liderás.</li>
+                <li>Los hijos te ven. Y en algún momento te van a preguntar por qué no podés correr con ellos.</li>
+                <li>La salud es un capital. Y vos la estás dejando depreciar mes a mes sin hacer nada.</li>
+                <li>El "mañana empiezo" tiene diez años de antigüedad. Y sabés exactamente a dónde lleva.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+       SOLUCIÓN — PRESENTACIÓN DEL MÉTODO
+  ═══════════════════════════════════════════ -->
+    <section class="solution">
+        <div class="container--wide">
+            <span class="type-label reveal">La solución</span>
+            <h2 class="section-title type-title reveal">Vas a recibir un sistema de <span
+                    class="text-red">entrenamientos</span> con:</h2>
+            <div class="solution__grid reveal">
+                <!-- COLUNA ESQUERDA -->
+                <div class="solution__image-col">
+                    <img src="mockup.png" alt="Mockup App Método 10 en 12" class="solution__mockup" />
+                </div>
+
+                <!-- COLUNA DIREITA -->
+                <div class="solution__content-col">
+                    <ul class="solution__benefits">
+                        <li class="benefit-card">
+                            <div class="benefit-card__icon">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="benefit-card__text">Entrenamientos prácticos, separados por niveles</div>
+                        </li>
+                        <li class="benefit-card">
+                            <div class="benefit-card__icon">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="benefit-card__text">Guías alimentarias con diferentes opciones de alimentación
+                            </div>
+                        </li>
+                        <li class="benefit-card">
+                            <div class="benefit-card__icon">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="benefit-card__text">Plan de seguimiento de progreso</div>
+                        </li>
+                        <li class="benefit-card">
+                            <div class="benefit-card__icon">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="benefit-card__text">Comunidad privada</div>
+                        </li>
+                    </ul>
+
+                    <p class="solution__footer-text type-bullet">
+                        El único programa que se adapta a tu rutina de trabajo y familia.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- ═══════════════════════════════════════════
+       3 PILARES
+  ═══════════════════════════════════════════ -->
+    <section class="pillars">
+        <div class="container">
+            <span class="type-label reveal">Lo que vas a recibir</span>
+            <h2 class="section-title type-title reveal">El Sistema de <span class="text-red">3 Pilares</span></h2>
+
+            <div class="pillars__grid reveal">
+                <div class="pillar" data-num="01">
+                    <div class="pillar__icon">🏋️</div>
+                    <div class="pillar__title type-desc" style="font-weight: 700;">Entrenamiento con Sentido</div>
+                    <p class="pillar__desc type-desc">Fases estructuradas para recuperar fuerza, eliminar grasa y
+                        volverte a
+                        sentir bien en tu propio cuerpo. Sin rutinas imposibles ni métodos de 22 años.</p>
+                    <ul class="pillar__bullets type-bullet">
+                        <li>Progresión por niveles — empezás donde estás</li>
+                        <li>Separado por fuerza, recomposición y definición</li>
+                        <li>Adaptable: pesas o peso corporal</li>
+                        <li>Sesiones de 40–60 minutos reales</li>
+                    </ul>
+                </div>
+                <div class="pillar" data-num="02">
+                    <div class="pillar__icon">🥗</div>
+                    <div class="pillar__title type-desc" style="font-weight: 700;">Nutrición sin Vueltas</div>
+                    <p class="pillar__desc type-desc">Un plan alimenticio que una persona real puede seguir. Alto en
+                        proteínas,
+                        basado en comida de verdad, con opciones flexibles para tu vida cotidiana.</p>
+                    <ul class="pillar__bullets type-bullet">
+                        <li>Sin conteo de calorías obsesivo</li>
+                        <li>Múltiples opciones de alimentación</li>
+                        <li>Adaptado al presupuesto y la cocina de Latam</li>
+                        <li>Apoyo para quienes comen afuera frecuente</li>
+                    </ul>
+                </div>
+                <div class="pillar" data-num="03">
+                    <div class="pillar__icon">📊</div>
+                    <div class="pillar__title type-desc" style="font-weight: 700;">Seguimiento y Ajuste</div>
+                    <p class="pillar__desc type-desc">Lo que no se mide no mejora. Vas a tener métricas claras,
+                        registros de
+                        progreso y ajustes tácticos para que tu avance nunca se estanque.</p>
+                    <ul class="pillar__bullets type-bullet">
+                        <li>App con registro de entrenamientos</li>
+                        <li>Seguimiento semanal de progreso</li>
+                        <li>Comunidad activa de hombres en proceso</li>
+                        <li>Notificaciones y recordatorios inteligentes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+       TRANSFORMACIONES
+  ═══════════════════════════════════════════ -->
+    <section class="transformation">
+        <div class="container--wide">
+            <div class="container">
+                <span class="type-label reveal">Resultados reales</span>
+                <h2 class="section-title type-title reveal">Personas reales.<br /><span class="text-red">Resultados
+                        reales.</span></h2>
+                <p class="transformation__sub type-desc reveal">
+                    Profesionales ocupados, padres con poco tiempo, hombres que habían intentado mil veces antes. Lo
+                    único que cambió fue el sistema.
+                </p>
+            </div>
+
+            <div class="results-grid reveal">
+                <div class="result-card">
+                    <img src="images/antesxdepois1.jpeg" alt="Transformación 1" />
+                    <div class="result-card__overlay">
+                        <div class="result-card__result">−11 kg en 84 días</div>
+                    </div>
+                </div>
+                <div class="result-card">
+                    <img src="images/antesxdepois2.jpeg" alt="Transformación 2" />
+                    <div class="result-card__overlay">
+                        <div class="result-card__result">−9 kg en 70 días</div>
+                    </div>
+                </div>
+                <div class="result-card">
+                    <img src="images/antesxdepois3.jpeg" alt="Transformación 3" />
+                    <div class="result-card__overlay">
+                        <div class="result-card__result">Recomposición física</div>
+                    </div>
+                </div>
+                <div class="result-card">
+                    <img src="images/antesxdepois4.jpeg" alt="Transformación 4" />
+                    <div class="result-card__overlay">
+                        <div class="result-card__result">−8 kg en 60 días</div>
+                    </div>
+                </div>
+                <div class="result-card">
+                    <img src="images/antesxdepois5.jpeg" alt="Transformación 5" />
+                    <div class="result-card__overlay">
+                        <div class="result-card__result">+8 kg de músculo</div>
+                    </div>
+                </div>
+                <div class="result-card">
+                    <img src="images/antesxdepois6.jpeg" alt="Transformación 6" />
+                    <div class="result-card__overlay">
+                        <div class="result-card__result">−12 kg en 90 días</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+       BASE DEL RENDIMIENTO
+  ═══════════════════════════════════════════ -->
+    <section class="performance">
+        <div class="container--wide">
+            <div class="performance__grid reveal">
+                <!-- COLUNA ESQUERDA -->
+                <div class="performance__image-col">
+                    <img src="images/tv-sala.jpg" alt="Entrenamiento Método 10 en 12 en TV" class="performance__image"
+                        loading="lazy" />
+                </div>
+
+                <!-- COLUNA DIREITA -->
+                <div class="performance__content">
+                    <h2 class="performance__title type-title">La Base del <span class="text-white">Rendimiento</span>
+                    </h2>
+                    <p class="performance__sub type-desc">
+                        Entrenamientos diseñados para resultados reales sin complicaciones.<br />
+                        Todo lo que necesitas en la palma de tu mano.
+                    </p>
+
+                    <div class="performance__list">
+                        <!-- Item 1 -->
+                        <div class="performance__item">
+                            <div class="performance__icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 20V10"></path>
+                                    <path d="M18 20V4"></path>
+                                    <path d="M6 20v-4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="performance__item-title type-desc" style="font-weight: 700;">Para todos los
+                                    niveles</h3>
+                                <p class="performance__item-text type-bullet">Principiante o avanzado, cada sesión está
+                                    pensada para
+                                    desafiarte al ritmo adecuado.</p>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="performance__item">
+                            <div class="performance__icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="performance__item-title type-desc" style="font-weight: 700;">Equipamiento
+                                    mínimo</h3>
+                                <p class="performance__item-text type-bullet">Entrena desde casa sin necesidad de
+                                    máquinas o
+                                    gimnasios.</p>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="performance__item">
+                            <div class="performance__icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="performance__item-title type-desc" style="font-weight: 700;">Rápido y
+                                    eficiente</h3>
+                                <p class="performance__item-text type-bullet">Sesiones diseñadas para generar resultados
+                                    en menos
+                                    tiempo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── COUNTRIES ─── -->
+    <div class="countries">
+        <div class="container">
+            <div class="countries__label">
+                <span class="type-label" style="display:inline-block;">El método funciona en toda
+                    Latinoamérica</span>
+            </div>
+            <div class="flags">
+                <div class="flag-item"><img src="https://flagcdn.com/w160/ar.png"
+                        alt="Argentina" /><span>Argentina</span></div>
+                <div class="flag-item"><img src="https://flagcdn.com/w160/cl.png" alt="Chile" /><span>Chile</span></div>
+                <div class="flag-item"><img src="https://flagcdn.com/w160/uy.png" alt="Uruguay" /><span>Uruguay</span>
+                </div>
+                <div class="flag-item"><img src="https://flagcdn.com/w160/py.png" alt="Paraguay" /><span>Paraguay</span>
+                </div>
+                <div class="flag-item"><img src="https://flagcdn.com/w160/bo.png" alt="Bolivia" /><span>Bolivia</span>
+                </div>
+                <div class="flag-item"><img src="https://flagcdn.com/w160/pe.png" alt="Perú" /><span>Perú</span></div>
+                <div class="flag-item"><img src="https://flagcdn.com/w160/co.png" alt="Colombia" /><span>Colombia</span>
+                </div>
+                <div class="flag-item"><img src="https://flagcdn.com/w160/mx.png" alt="México" /><span>México</span>
+                </div>
+                <div class="flag-item"><img src="https://flagcdn.com/w160/cr.png" alt="Costa Rica" /><span>Costa
+                        Rica</span></div>
+                <div class="flag-item"><img src="https://flagcdn.com/w160/us.png" alt="EE.UU." /><span>EE.UU.</span>
+                </div>
+                <div class="flag-item"><img src="https://flagcdn.com/w160/ca.png" alt="Canadá" /><span>Canadá</span>
+                </div>
+                <div class="flag-item"><img src="https://flagcdn.com/w160/es.png" alt="España" /><span>España</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+       PRICING
+  ═══════════════════════════════════════════ -->
+    <section class="pricing" id="precio">
+        <div class="container">
+            <span class="type-label reveal">Elegí tu plan</span>
+            <h2 class="section-title type-title reveal">Inversión en <span class="text-red">vos mismo.</span></h2>
+            <p class="pricing__intro type-desc reveal">
+                Una taza de café por semana. Eso es lo que cuesta el método más específico para hombres de 35+ en
+                Latinoamérica.
+            </p>
+
+            <div class="pricing-grid reveal">
+
+                <!-- PLAN 60 DÍAS -->
+                <div class="pricing-card">
+                    <div class="pricing-plan">Plan 60 días</div>
+                    <div class="pricing-price"><span>$</span>27</div>
+                    <p class="pricing-installment">O 3 cuotas de <strong>$9,90</strong></p>
+                    <ul class="pricing-features">
+                        <li>Acceso a los 3 pilares del método</li>
+                        <li>App con entrenamientos guiados</li>
+                        <li>Plan de nutrición completo</li>
+                        <li>Registro de progreso</li>
+                        <li>Comunidad privada</li>
+                    </ul>
+                    <a href="https://pay.hotmart.com/C94220809C?off=o1dwj6vs&bid=1772375588152" target="_blank"
+                        class="btn btn--primary" style="width:100%;">
+                        Empezar 60 días <span class="btn__arrow">→</span>
+                    </a>
+                </div>
+
+                <!-- PLAN 6 MESES — DESTACADO -->
+                <div class="pricing-card pricing-card--featured">
+                    <div class="pricing-badge">⭐ Más elegido</div>
+                    <div class="pricing-plan">Plan 6 meses</div>
+                    <div class="pricing-price"><span>$</span>47</div>
+                    <p class="pricing-installment">O 3 cuotas de <strong>$15,66</strong></p>
+                    <p class="pricing-per">Solo $7,83 por mes</p>
+                    <ul class="pricing-features">
+                        <li>Todo del plan 60 días</li>
+                        <li>Acceso por 6 meses completos</li>
+                        <li>Actualizaciones del método incluidas</li>
+                        <li>Soporte prioritario</li>
+                        <li>Seguimiento extendido de progreso</li>
+                    </ul>
+                    <a href="https://pay.hotmart.com/C94220809C?off=ox1vezie&bid=1772375589202" target="_blank"
+                        class="btn btn--gold" style="width:100%;">
+                        Elegir plan 6 meses <span class="btn__arrow">→</span>
+                    </a>
+                </div>
+
+                <!-- PLAN ANUAL -->
+                <div class="pricing-card">
+                    <div class="pricing-badge" style="background:var(--red);color:var(--white);">Mejor valor</div>
+                    <div class="pricing-plan">Plan Anual</div>
+                    <div class="pricing-price"><span>$</span>67</div>
+                    <p class="pricing-installment">O 3 cuotas de <strong>$22,33</strong></p>
+                    <p class="pricing-per">Solo $5,50 por mes — el precio más bajo</p>
+                    <ul class="pricing-features">
+                        <li>Todo del plan 6 meses</li>
+                        <li>Acceso por 12 meses completos</li>
+                        <li>Acceso a futuros módulos sin costo adicional</li>
+                        <li>Comunidad VIP anual</li>
+                        <li>Soporte 1 a 1 en primeras semanas</li>
+                    </ul>
+                    <a href="https://pay.hotmart.com/C94220809C?off=dc5ncw8i&bid=1772375591780" target="_blank"
+                        class="btn btn--primary" style="width:100%;">
+                        Acceso anual completo <span class="btn__arrow">→</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+       GARANTÍA
+  ═══════════════════════════════════════════ -->
+    <section class="guarantee">
+        <div class="container">
+            <div class="guarantee__box reveal">
+                <div class="guarantee__badge">🛡️</div>
+                <h2 class="guarantee__title type-title">Garantía de 7 Días</h2>
+                <p class="guarantee__text type-desc">
+                    Entrá al método, recorré todo el contenido, probá los primeros entrenamientos y analizá la
+                    estructura completa. Si sentís que no es para vos, te devolvemos cada centavo. Sin vueltas. Sin
+                    cuestionamientos.
+                </p>
+                <p class="guarantee__text" style="font-weight:600; color: var(--white);">
+                    El único riesgo real es seguir haciendo lo mismo y esperar resultados distintos.
+                </p>
+                <p class="guarantee__footer">Procesado a través de Hotmart — plataforma segura con protección de datos
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- ═══════════════════════════════════════════
+       FAQ
+  ═══════════════════════════════════════════ -->
+    <section class="faq">
+        <div class="container">
+            <span class="type-label reveal">Preguntas frecuentes</span>
+            <h2 class="section-title type-title reveal">¿Dudas? <span class="text-red">Acá van.</span></h2>
+
+            <div class="faq__grid reveal">
+
+                <div class="faq-item">
+                    <button class="faq-item__q">
+                        ¿Necesito tener gimnasio o equipamiento especial?
+                        <div class="faq-item__icon">+</div>
+                    </button>
+                    <div class="faq-item__a">
+                        <div class="faq-item__a-inner">
+                            Para nada. Los entrenamientos están diseñados para hacerse con mancuernas, con barras o
+                            directamente con el peso de tu cuerpo. Si tenés acceso a un gimnasio, perfecto. Si no, igual
+                            funcionan.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-item__q">
+                        Hace años que no entreno. ¿Es adecuado para mí?
+                        <div class="faq-item__icon">+</div>
+                    </button>
+                    <div class="faq-item__a">
+                        <div class="faq-item__a-inner">
+                            Especialmente para vos. El método está diseñado con una progresión que arranca desde cero.
+                            Los entrenamientos son guiados, por nivel, y se ajustan a donde estás hoy. Si podés moverte,
+                            podés hacerlo.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-item__q">
+                        Tengo muy poco tiempo. ¿Cuánto tiempo necesito por día?
+                        <div class="faq-item__icon">+</div>
+                    </button>
+                    <div class="faq-item__a">
+                        <div class="faq-item__a-inner">
+                            Las sesiones están diseñadas para durar entre 40 y 60 minutos. Tres o cuatro veces por
+                            semana es suficiente para ver resultados. El método se adapta a tu agenda, no al revés.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-item__q">
+                        ¿Cómo es el plan de alimentación?
+                        <div class="faq-item__icon">+</div>
+                    </button>
+                    <div class="faq-item__a">
+                        <div class="faq-item__a-inner">
+                            Simple, alto en proteínas y basado en comida real. Sin contar calorías de forma obsesiva,
+                            sin recetas de restaurante gourmet. Opciones múltiples que encajan con la alimentación
+                            típica de Latinoamérica — incluyendo comer afuera y reuniones sociales.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-item__q">
+                        ¿Cómo accedo al Método después de comprar?
+                        <div class="faq-item__icon">+</div>
+                    </button>
+                    <div class="faq-item__a">
+                        <div class="faq-item__a-inner">
+                            Inmediatamente después del pago recibís acceso a nuestra app donde encontrás todo:
+                            entrenamientos, plan alimenticio, registro de progreso, comunidad y notificaciones. Todo en
+                            un solo lugar, desde el celular.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-item__q">
+                        Ya fallé en todos mis intentos anteriores. ¿Por qué este sería diferente?
+                        <div class="faq-item__icon">+</div>
+                    </button>
+                    <div class="faq-item__a">
+                        <div class="faq-item__a-inner">
+                            Porque esta vez no dependés de la motivación — dependés de un sistema. Los intentos
+                            anteriores fallaron porque no estaban diseñados para tu vida real: trabajo, familia, energía
+                            limitada. El Método 10 en 12 sí está. Sin suposiciones, sin sobrecarga, sin empezar de cero
+                            solo.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-item__q">
+                        ¿Qué pasa si no funciona para mí?
+                        <div class="faq-item__icon">+</div>
+                    </button>
+                    <div class="faq-item__a">
+                        <div class="faq-item__a-inner">
+                            Tenés 7 días de garantía total. Si por cualquier motivo sentís que no es lo que necesitás,
+                            te devolvemos el 100% del dinero. Sin preguntas, sin vueltas. El riesgo es nuestro, no tuyo.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+       FINAL CTA
+  ═══════════════════════════════════════════ -->
+    <section class="final-cta">
+        <div class="container">
+            <h2 class="final-cta__headline type-title reveal" style="margin-bottom: 24px;">
+                Dejaste de ser prioridad<br /><span class="text-red">demasiado tiempo.</span>
+            </h2>
+            <p class="final-cta__sub type-desc reveal" style="margin-bottom: 40px; color: var(--white2);">
+                La estructura está acá. El método existe. La decisión es tuya y solo tuya.
+            </p>
+            <div class="reveal">
+                <a href="#precio" class="btn btn--gold">Quiero empezar ahora <span class="btn__arrow">→</span></a>
+            </div>
+            <p class="final-cta__micro reveal">✓ Acceso inmediato &nbsp;·&nbsp; ✓ Garantía de 7 días &nbsp;·&nbsp; ✓ Sin
+                contratos ni permanencia</p>
+        </div>
+    </section>
+
+    <!-- ─── FOOTER ─── -->
+    <footer>
+        <div class="footer__brand">MÉTODO <span>10 EN 12</span></div>
+        <p class="footer__copy">© 2026 Método 10 en 12. Todos los derechos reservados.</p>
+        <p class="footer__disclaimer">
+            Los resultados individuales pueden variar según el nivel de compromiso, la constancia y los factores
+            personales de cada usuario. Este programa no garantiza pérdida de peso si no se siguen las instrucciones del
+            método. Este producto no es un sustituto de la atención médica profesional.
+        </p>
+    </footer>
+
+    <script>
+        // ─── STICKY NAV ───
+        const nav = document.getElementById('stickyNav');
+        const heroHeight = window.innerHeight * 0.7;
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > heroHeight) {
+                nav.classList.add('visible');
+            } else {
+                nav.classList.remove('visible');
+            }
+        });
+
+        // ─── SCROLL REVEAL ───
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.transitionDelay = `${(i % 4) * 0.1}s`;
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        reveals.forEach(el => observer.observe(el));
+
+        // ─── FAQ ACCORDION ───
+        document.querySelectorAll('.faq-item__q').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.parentElement;
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+                if (!isOpen) item.classList.add('open');
+            });
+        });
+    </script>
+</body>
+
+</html>
