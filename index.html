@@ -240,7 +240,7 @@
 
         .hero__sub {
             font-size: clamp(1rem, 2vw, 1.15rem);
-            font-weight: 500;
+            font-weight: 400;
             color: var(--white2);
             max-width: 600px;
             margin-top: 16px;
@@ -285,11 +285,13 @@
                 font-size: 2.2rem;
                 line-height: 1.05;
                 margin-bottom: 8px;
+                text-align: center;
             }
 
             .hero__sub {
                 font-size: 1.05rem;
-                margin-top: 16px;
+                margin-top: 10px;
+                text-align: center;
             }
 
             .hero__tag {
@@ -487,14 +489,14 @@
         }
 
         .section-label {
-            font-family: 'Barlow Condensed', sans-serif;
-            font-weight: 700;
-            font-size: 0.72rem;
-            letter-spacing: 0.35em;
-            text-transform: uppercase;
-            color: var(--red);
-            margin-bottom: 16px;
-            display: block;
+            font-family: 'Barlow Condensed', sans-serif !important;
+            font-weight: 700 !important;
+            font-size: 0.72rem !important;
+            letter-spacing: 0.35em !important;
+            text-transform: uppercase !important;
+            color: var(--red) !important;
+            margin-bottom: 16px !important;
+            display: block !important;
         }
 
         .section-title {
@@ -737,9 +739,10 @@
         }
 
         .benefit-card__text {
-            font-size: 1.1rem;
-            color: var(--white);
-            font-weight: 500;
+            font-family: 'Barlow', sans-serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9);
             line-height: 1.5;
         }
 
@@ -902,12 +905,18 @@
         }
 
         .transformation__sub {
-            font-size: 1.05rem;
+            font-size: 17px;
             color: var(--white2);
-            max-width: 580px;
             margin-top: 20px;
             margin-bottom: 56px;
+            line-height: 1.6;
+
+            text-align: left;
+            margin-left: 0;
+            margin-right: auto;
+            max-width: 580px;
         }
+
 
         .results-grid {
             display: grid;
@@ -992,8 +1001,8 @@
 
         .performance__grid {
             display: grid;
-            grid-template-columns: 1.05fr 0.95fr;
-            gap: 40px;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 24px;
             align-items: center;
         }
 
@@ -1004,10 +1013,12 @@
         }
 
         .performance__image {
-            max-width: 100%;
-            width: auto;
-            max-height: 500px;
-            height: auto;
+            width: 100%;
+            max-width: 460px;
+            max-height: 520px;
+            height: 520px;
+            object-fit: cover;
+            object-position: center;
             border-radius: 16px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05);
             display: block;
@@ -1023,7 +1034,7 @@
         }
 
         .performance__sub {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: var(--gray);
             line-height: 1.6;
             margin-bottom: 48px;
@@ -1096,7 +1107,7 @@
         @media (max-width: 1024px) {
             .performance__grid {
                 grid-template-columns: 1fr;
-                gap: 48px;
+                gap: 32px;
             }
 
             .performance__image-col {
@@ -1160,11 +1171,14 @@
         }
 
         .pricing__intro {
-            font-size: 1.1rem;
-            color: var(--white2);
-            max-width: 560px;
-            margin-top: 16px;
-            margin-bottom: 64px;
+            font-family: 'Barlow', sans-serif;
+            font-weight: 400;
+            font-size: 17px !important;
+            color: rgba(255, 255, 255, 0.75);
+            margin-top: 20px;
+            margin-bottom: 56px;
+            text-align: left;
+            line-height: 1.6;
         }
 
         .pricing-grid {
@@ -1410,16 +1424,6 @@
         .transformation {
             padding: 100px 0;
             background: var(--black);
-        }
-
-        .transformation__sub {
-            font-size: 1.1rem;
-            color: var(--gray);
-            margin-top: 16px;
-            text-align: center;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .results-grid {
@@ -1720,6 +1724,42 @@
             margin-left: auto;
             margin-right: auto;
         }
+
+        /* TASK: OVERRIDE 3 SPECIFIC TITLES TO MATCH "El Sistema de 3 Pilares" */
+        .agitation__statement,
+        .solution .section-title,
+        .performance__title {
+            font-family: 'Bebas Neue', sans-serif !important;
+            font-size: clamp(2.2rem, 5vw, 3.8rem) !important;
+            font-weight: 400 !important;
+            letter-spacing: 0.02em !important;
+            text-transform: uppercase !important;
+            line-height: 1 !important;
+        }
+
+
+        /* TASK: SPECIFIC BODY TYPOGRAPHY OVERRIDE */
+        .font-body-standard {
+            font-family: 'Barlow', sans-serif !important;
+            font-weight: 500 !important;
+            font-size: 0.95rem !important;
+            line-height: 1.15 !important;
+            color: rgba(253, 252, 252, 0.75) !important;
+        }
+
+
+
+
+        .font-15-barlow {
+            font-family: 'Barlow', sans-serif !important;
+            font-weight: 400 !important;
+            font-size: 15.5px !important;
+            color: rgba(255, 255, 255, 0.75) !important;
+        }
+
+        .align-left-desktop {
+            text-align: left !important;
+        }
     </style>
 </head>
 
@@ -1739,16 +1779,13 @@
     <section class="hero">
         <div class="hero__bg"></div>
         <div class="container">
-            <span class="type-label">Para hombres de 35+ años</span>
+            <span class="hero__tag">Para hombres de 35+ años</span>
             <h1 class="hero__headline type-title">
-                Eso que eras
-                <em>todavía está ahí.</em>
+                Eso que eras <em>todavía está ahí.</em><br>
                 Solo necesita estructura.
             </h1>
             <p class="hero__sub type-desc">
-                Dejaste de entrenar. La vida pasó. El trabajo, la familia, el cansancio.<br />
-                <strong>Tenés 12 semanas para recuperar el cuerpo, la energía y la confianza que se fueron quedando
-                    atrás.</strong>
+                Dejaste de entrenar. La vida pasó. El trabajo, la familia, el cansancio.
             </p>
             <div class="video-wrapper"
                 style="margin: 40px 0 0 0; position: relative; z-index: 1; animation: fadeUp 1s ease 0.3s both; cursor: pointer;"
@@ -1787,12 +1824,12 @@
                 <div class="stat__label">Pilares del método</div>
             </div>
             <div class="stat">
-                <div class="stat__num">+5000</div>
+                <div class="stat__num">+500</div>
                 <div class="stat__label">Hombres en proceso</div>
             </div>
             <div class="stat">
                 <div class="stat__num">12</div>
-                <div class="stat__label">Países en Latam</div>
+                <div class="stat__label">Países</div>
             </div>
         </div>
     </div>
@@ -1802,7 +1839,7 @@
   ═══════════════════════════════════════════ -->
     <section class="pain">
         <div class="container--wide">
-            <span class="type-label reveal">El problema real</span>
+            <span class="section-label reveal">El problema real</span>
             <p class="pain__intro type-desc reveal">
                 No es que perdiste la disciplina.<br />
                 <em>Es que nadie te dio una estructura que funcione con la vida que tenés.</em>
@@ -1868,9 +1905,10 @@
                 </div>
             </div>
 
-            <div class="pain__bridge reveal">
-                "El problema no sos vos, el problema es que seguiste buscando soluciones de 25 años con el cuerpo, el
-                tiempo y la cabeza de los 35+. Eso termina acá."
+            <div class="pain__bridge reveal"
+                style="font-family: 'Barlow', sans-serif; font-weight: 00; font-size: 22px; color: #ffffff; font-style: italic; line-height: 1.4; text-transform: none; letter-spacing: normal;">
+                &ldquo;El problema no sos vos, el problema es que seguiste buscando soluciones de 25 años con el cuerpo,
+                el tiempo y la cabeza de los 35+. <strong> Eso termina acá!</strong>&rdquo;
             </div>
         </div>
     </section>
@@ -1880,13 +1918,13 @@
   ═══════════════════════════════════════════ -->
     <section class="agitation">
         <div class="container">
-            <span class="type-label reveal">Lo que está en juego</span>
+            <span class="section-label reveal">Lo que está en juego</span>
             <p class="agitation__statement type-title reveal">
                 Cada día que pasa sin hacer nada tiene un costo
             </p>
 
             <ul class="agitation__list type-bullet reveal">
-                <li>La energía que perdiste no vuelve sola — y cada año que pasa, cuesta el doble recuperarla.</li>
+                <li>La energía que perdiste no vuelve sola y cada año que pasa, cuesta el doble recuperarla.</li>
                 <li>Tu autoconfianza depende de cómo te sentís en tu propio cuerpo. Eso afecta todo: el trabajo, la
                     pareja, cómo liderás.</li>
                 <li>Los hijos te ven. Y en algún momento te van a preguntar por qué no podés correr con ellos.</li>
@@ -1901,7 +1939,7 @@
   ═══════════════════════════════════════════ -->
     <section class="solution">
         <div class="container--wide">
-            <span class="type-label reveal">La solución</span>
+            <span class="section-label reveal">La solución</span>
             <h2 class="section-title type-title reveal">Vas a recibir un sistema de <span
                     class="text-red">entrenamientos</span> con:</h2>
             <div class="solution__grid reveal">
@@ -1920,16 +1958,8 @@
                                     <polyline points="20 6 9 17 4 12"></polyline>
                                 </svg>
                             </div>
-                            <div class="benefit-card__text">Entrenamientos prácticos, separados por niveles</div>
-                        </li>
-                        <li class="benefit-card">
-                            <div class="benefit-card__icon">
-                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
-                            </div>
-                            <div class="benefit-card__text">Guías alimentarias con diferentes opciones de alimentación
+                            <div class="benefit-card__text font-body-standard"><span
+                                    class="font-body-standard">Entrenamientos prácticos, separados por niveles</span>
                             </div>
                         </li>
                         <li class="benefit-card">
@@ -1939,7 +1969,10 @@
                                     <polyline points="20 6 9 17 4 12"></polyline>
                                 </svg>
                             </div>
-                            <div class="benefit-card__text">Plan de seguimiento de progreso</div>
+                            <div class="benefit-card__text"><span class="font-body-standard">Guías
+                                    alimentarias con
+                                    diferentes opciones de alimentación</span>
+                            </div>
                         </li>
                         <li class="benefit-card">
                             <div class="benefit-card__icon">
@@ -1948,7 +1981,20 @@
                                     <polyline points="20 6 9 17 4 12"></polyline>
                                 </svg>
                             </div>
-                            <div class="benefit-card__text">Comunidad privada</div>
+                            <div class="benefit-card__text"><span class="font-body-standard">Plan de
+                                    seguimiento de
+                                    progreso</span></div>
+                        </li>
+                        <li class="benefit-card">
+                            <div class="benefit-card__icon">
+                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="benefit-card__text"><span class="font-body-standard">Comunidad
+                                    privada</span>
+                            </div>
                         </li>
                     </ul>
 
@@ -1967,16 +2013,16 @@
   ═══════════════════════════════════════════ -->
     <section class="pillars">
         <div class="container">
-            <span class="type-label reveal">Lo que vas a recibir</span>
+            <span class="section-label reveal">Lo que vas a recibir</span>
             <h2 class="section-title type-title reveal">El Sistema de <span class="text-red">3 Pilares</span></h2>
 
             <div class="pillars__grid reveal">
                 <div class="pillar" data-num="01">
                     <div class="pillar__icon">🏋️</div>
                     <div class="pillar__title type-desc" style="font-weight: 700;">Entrenamiento con Sentido</div>
-                    <p class="pillar__desc type-desc">Fases estructuradas para recuperar fuerza, eliminar grasa y
-                        volverte a
-                        sentir bien en tu propio cuerpo. Sin rutinas imposibles ni métodos de 22 años.</p>
+                    <p class="pillar__desc type-desc">Fases estructuradas para
+                        recuperar fuerza, eliminar grasa y volver te a sentir bien en tu propio cuerpo. Sin rutinas
+                        imposibles ni métodos de 22 años.</p>
                     <ul class="pillar__bullets type-bullet">
                         <li>Progresión por niveles — empezás donde estás</li>
                         <li>Separado por fuerza, recomposición y definición</li>
@@ -1988,8 +2034,7 @@
                     <div class="pillar__icon">🥗</div>
                     <div class="pillar__title type-desc" style="font-weight: 700;">Nutrición sin Vueltas</div>
                     <p class="pillar__desc type-desc">Un plan alimenticio que una persona real puede seguir. Alto en
-                        proteínas,
-                        basado en comida de verdad, con opciones flexibles para tu vida cotidiana.</p>
+                        proteínas, basado en comida de verdad, con opciones flexibles para tu vida cotidiana.</p>
                     <ul class="pillar__bullets type-bullet">
                         <li>Sin conteo de calorías obsesivo</li>
                         <li>Múltiples opciones de alimentación</li>
@@ -2001,8 +2046,7 @@
                     <div class="pillar__icon">📊</div>
                     <div class="pillar__title type-desc" style="font-weight: 700;">Seguimiento y Ajuste</div>
                     <p class="pillar__desc type-desc">Lo que no se mide no mejora. Vas a tener métricas claras,
-                        registros de
-                        progreso y ajustes tácticos para que tu avance nunca se estanque.</p>
+                        registros de progreso y ajustes tácticos para que tu avance nunca se estanque.</p>
                     <ul class="pillar__bullets type-bullet">
                         <li>App con registro de entrenamientos</li>
                         <li>Seguimiento semanal de progreso</li>
@@ -2020,10 +2064,10 @@
     <section class="transformation">
         <div class="container--wide">
             <div class="container">
-                <span class="type-label reveal">Resultados reales</span>
+                <span class="section-label reveal">Resultados reales</span>
                 <h2 class="section-title type-title reveal">Personas reales.<br /><span class="text-red">Resultados
                         reales.</span></h2>
-                <p class="transformation__sub type-desc reveal">
+                <p class="transformation__sub reveal">
                     Profesionales ocupados, padres con poco tiempo, hombres que habían intentado mil veces antes. Lo
                     único que cambió fue el sistema.
                 </p>
@@ -2084,11 +2128,14 @@
 
                 <!-- COLUNA DIREITA -->
                 <div class="performance__content">
-                    <h2 class="performance__title type-title">La Base del <span class="text-white">Rendimiento</span>
-                    </h2>
-                    <p class="performance__sub type-desc">
-                        Entrenamientos diseñados para resultados reales sin complicaciones.<br />
-                        Todo lo que necesitas en la palma de tu mano.
+                    <h3 class="performance__title type-title">La Base del <span class="text-red">Rendimiento</span>
+                    </h3>
+                    <p class="performance__sub type-desc font-body-standard" style="font-size: 18px !important;">
+                        Entrenamientos diseñados para resultados reales sin complicaciones.
+                    </p>
+                    <p class="performance__sub type-desc font-body-standard"
+                        style="font-size: 18px !important; margin-top: 4px; margin-bottom: 48px; font-style: italic;">
+                        <strong style="font-weight: 400;">Todo lo que necesitas en la palma de tu mano.</strong>
                     </p>
 
                     <div class="performance__list">
@@ -2103,9 +2150,12 @@
                                 </svg>
                             </div>
                             <div>
-                                <h3 class="performance__item-title type-desc" style="font-weight: 700;">Para todos los
+                                <h3 class="performance__item-title type-desc" style="font-weight: 700;">Para todos
+                                    los
                                     niveles</h3>
-                                <p class="performance__item-text type-bullet">Principiante o avanzado, cada sesión está
+                                <p class="performance__item-text type-bullet font-15-barlow">Principiante o
+                                    avanzado,
+                                    cada sesión está
                                     pensada para
                                     desafiarte al ritmo adecuado.</p>
                             </div>
@@ -2123,7 +2173,8 @@
                             <div>
                                 <h3 class="performance__item-title type-desc" style="font-weight: 700;">Equipamiento
                                     mínimo</h3>
-                                <p class="performance__item-text type-bullet">Entrena desde casa sin necesidad de
+                                <p class="performance__item-text type-bullet font-15-barlow">Entrena desde casa sin
+                                    necesidad de
                                     máquinas o
                                     gimnasios.</p>
                             </div>
@@ -2140,7 +2191,8 @@
                             <div>
                                 <h3 class="performance__item-title type-desc" style="font-weight: 700;">Rápido y
                                     eficiente</h3>
-                                <p class="performance__item-text type-bullet">Sesiones diseñadas para generar resultados
+                                <p class="performance__item-text type-bullet font-15-barlow">Sesiones diseñadas para
+                                    generar resultados
                                     en menos
                                     tiempo.</p>
                             </div>
@@ -2155,7 +2207,7 @@
     <div class="countries">
         <div class="container">
             <div class="countries__label">
-                <span class="type-label" style="display:inline-block;">El método funciona en toda
+                <span class="section-label">El método funciona en toda
                     Latinoamérica</span>
             </div>
             <div class="flags">
@@ -2190,11 +2242,10 @@
   ═══════════════════════════════════════════ -->
     <section class="pricing" id="precio">
         <div class="container">
-            <span class="type-label reveal">Elegí tu plan</span>
+            <span class="section-label reveal">Elegí tu plan</span>
             <h2 class="section-title type-title reveal">Inversión en <span class="text-red">vos mismo.</span></h2>
-            <p class="pricing__intro type-desc reveal">
-                Una taza de café por semana. Eso es lo que cuesta el método más específico para hombres de 35+ en
-                Latinoamérica.
+            <p class="pricing__intro reveal">
+                Una taza de café por semana. Eso es lo que cuesta el método más específico para hombres de 35+
             </p>
 
             <div class="pricing-grid reveal">
@@ -2209,7 +2260,7 @@
                         <li>App con entrenamientos guiados</li>
                         <li>Plan de nutrición completo</li>
                         <li>Registro de progreso</li>
-                        <li>Comunidad privada</li>
+                        <li><span class="font-body-standard">Comunidad privada</span></li>
                     </ul>
                     <a href="https://pay.hotmart.com/C94220809C?off=o1dwj6vs&bid=1772375588152" target="_blank"
                         class="btn btn--primary" style="width:100%;">
@@ -2290,7 +2341,7 @@
   ═══════════════════════════════════════════ -->
     <section class="faq">
         <div class="container">
-            <span class="type-label reveal">Preguntas frecuentes</span>
+            <span class="section-label reveal">Preguntas frecuentes</span>
             <h2 class="section-title type-title reveal">¿Dudas? <span class="text-red">Acá van.</span></h2>
 
             <div class="faq__grid reveal">
