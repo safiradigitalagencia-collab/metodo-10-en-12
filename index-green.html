@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Método 10 en 12 — Retomá el Control</title>
+    <title>Método 10 en 12 — Retomá el Control (Green)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -20,19 +20,39 @@
         }
 
         :root {
-            --black: #0a0a0a;
-            --dark: #111111;
-            --dark2: #1a1a1a;
-            --dark3: #232323;
-            --red: #D62828;
-            --red-hot: #FF2020;
-            --red-dark: #a01e1e;
-            --gold: #C9A84C;
-            --gold-light: #e8c97a;
-            --white: #f5f0eb;
-            --white2: #d4cec7;
-            --gray: #888;
-            --gray-dark: #555;
+            /* ─── HERO/DARK ZONE ─── */
+            --hero-bg: #142034;
+            --hero-bg-light: #1a2d4a;
+            /* ─── ACCENT COLORS ─── */
+            --accent: #DDF469;
+            --accent-hover: #eef891;
+            --accent-dark: #b8cc50;
+            --accent-green: #DDF469;
+            --accent-green-soft: #DDF469;
+            /* ─── LIGHT BODY ─── */
+            --body-bg: #FFFFFF;
+            --body-bg-alt: #F5F7F2;
+            --body-bg-card: #FFFFFF;
+            --body-border: #E2E8D9;
+            /* ─── TEXT ON LIGHT ─── */
+            --text-dark: #142034;
+            --text-body: #3a4a5c;
+            --text-muted: #6b7c8e;
+            --text-light: #8899aa;
+            /* ─── LEGACY ALIASES (keep layout working) ─── */
+            --black: #142034;
+            --dark: #FFFFFF;
+            --dark2: #F5F7F2;
+            --dark3: #EDF0E8;
+            --red: #DDF469;
+            --red-hot: #eef891;
+            --red-dark: #b8cc50;
+            --gold: #DDF469;
+            --gold-light: #DDF469;
+            --white: #142034;
+            --white2: #3a4a5c;
+            --gray: #6b7c8e;
+            --gray-dark: #8899aa;
         }
 
         html {
@@ -40,23 +60,17 @@
         }
 
         body {
-            background: var(--black);
-            color: var(--white);
+            background: var(--body-bg);
+            color: var(--text-dark);
             font-family: 'Barlow', sans-serif;
             font-size: 17px;
             line-height: 1.65;
             overflow-x: hidden;
         }
 
-        /* ─── NOISE TEXTURE OVERLAY ─── */
+        /* ─── NOISE TEXTURE OVERLAY (disabled on white) ─── */
         body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.5;
+            display: none;
         }
 
         /* ─── TYPOGRAPHY ─── */
@@ -116,11 +130,21 @@
         }
 
         .text-red {
-            color: var(--red);
+            color: #142034;
         }
 
         .text-gold {
-            color: var(--gold);
+            color: #142034;
+        }
+
+        /* Em zonas escuras, destaque verde */
+        .hero .text-red,
+        .hero .text-gold,
+        .final-cta .text-red,
+        .final-cta .text-gold,
+        .stat-bar .text-red,
+        .stat-bar .text-gold {
+            color: #DDF469;
         }
 
         .text-center {
@@ -135,9 +159,9 @@
             right: 0;
             z-index: 100;
             padding: 14px 24px;
-            background: rgba(10, 10, 10, 0.92);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(214, 40, 40, 0.2);
+            background: #142034;
+            backdrop-filter: none;
+            border-bottom: 1px solid rgba(221, 244, 105, 0.15);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -153,11 +177,11 @@
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.4rem;
             letter-spacing: 0.05em;
-            color: var(--white);
+            color: #f0f5ea;
         }
 
         .sticky-nav__brand span {
-            color: var(--red);
+            color: #DDF469;
         }
 
         .btn-nav {
@@ -166,17 +190,18 @@
             font-size: 0.95rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--white);
-            background: var(--red);
+            color: #DDF469;
+            background: transparent;
             padding: 10px 22px;
-            border: none;
+            border: 1px solid #DDF469;
             cursor: pointer;
             text-decoration: none;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
 
         .btn-nav:hover {
-            background: var(--red-hot);
+            background: rgba(221, 244, 105, 0.15);
+            color: #eef891;
         }
 
         /* ─── HERO ─── */
@@ -188,23 +213,35 @@
             position: relative;
             padding: 120px 24px 80px;
             overflow: hidden;
+            background: #142034;
+            color: #f0f5ea;
         }
 
         .hero__bg {
             position: absolute;
             inset: 0;
             background:
-                linear-gradient(105deg, rgba(214, 40, 40, 0.12) 0%, transparent 50%),
-                linear-gradient(to bottom, rgba(10, 10, 10, 0.3) 0%, rgba(10, 10, 10, 0.85) 100%),
-                url('assets/hero_fitness_bg.png') center/cover no-repeat;
+                linear-gradient(135deg, rgba(20, 32, 52, 1) 0%, rgba(26, 45, 74, 0.95) 40%, rgba(20, 40, 60, 0.98) 70%, rgba(20, 32, 52, 1) 100%);
             z-index: 0;
+        }
+
+        .hero__bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 30% 40%, rgba(221, 244, 105, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 60%, rgba(221, 244, 105, 0.03) 0%, transparent 50%);
+            z-index: 1;
         }
 
         .hero__bg::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(ellipse at 70% 50%, rgba(214, 40, 40, 0.08) 0%, transparent 70%);
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg stroke='%23DDF469' stroke-width='0.5' stroke-opacity='0.06'%3E%3Cpath d='M30 0L60 17.32v34.64L30 60 0 51.96V17.32z'/%3E%3Cpath d='M30 10L50 21.55v23.1L30 50 10 44.65V21.55z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-size: 60px 60px;
+            opacity: 1;
+            z-index: 2;
         }
 
         .hero__tag {
@@ -213,13 +250,13 @@
             font-size: 0.8rem;
             letter-spacing: 0.3em;
             text-transform: uppercase;
-            color: var(--red);
-            border: 1px solid rgba(214, 40, 40, 0.4);
+            color: #DDF469;
+            border: 1px solid rgba(221, 244, 105, 0.4);
             display: inline-block;
             padding: 6px 14px;
             margin-bottom: 28px;
             position: relative;
-            z-index: 1;
+            z-index: 3;
             animation: fadeUp 0.8s ease both;
         }
 
@@ -228,29 +265,30 @@
             max-width: 900px;
             line-height: 1.05;
             position: relative;
-            z-index: 1;
+            z-index: 3;
             animation: fadeUp 0.9s ease 0.1s both;
+            color: #f0f5ea;
         }
 
         .hero__headline em {
             font-style: normal;
-            color: var(--red);
+            color: #DDF469;
             display: block;
         }
 
         .hero__sub {
             font-size: clamp(1rem, 2vw, 1.15rem);
             font-weight: 400;
-            color: var(--white2);
+            color: rgba(240, 245, 234, 0.7);
             max-width: 600px;
             margin-top: 16px;
             position: relative;
-            z-index: 1;
+            z-index: 3;
             animation: fadeUp 1s ease 0.2s both;
         }
 
         .hero__sub strong {
-            color: var(--white);
+            color: #f0f5ea;
         }
 
         .hero__cta-group {
@@ -260,16 +298,16 @@
             gap: 20px;
             flex-wrap: wrap;
             position: relative;
-            z-index: 1;
+            z-index: 3;
             animation: fadeUp 1s ease 0.4s both;
         }
 
         .hero__micro {
             font-size: 0.82rem;
-            color: var(--gray);
+            color: rgba(240, 245, 234, 0.5);
             letter-spacing: 0.05em;
             position: relative;
-            z-index: 1;
+            z-index: 3;
             animation: fadeUp 1s ease 0.5s both;
             margin-top: 20px;
         }
@@ -300,7 +338,7 @@
             }
 
             .video-wrapper {
-                margin: 24px auto 0 !important;
+                margin: 24px 0 0 0 !important;
                 border-radius: 8px;
                 width: 93%;
                 max-width: none;
@@ -355,11 +393,11 @@
 
             .video-wrapper {
                 margin: 40px auto 0 !important;
-                width: 90%;
-                max-width: 720px;
+                max-width: 760px;
+                width: 100%;
                 border-radius: 12px;
                 aspect-ratio: 16/9;
-                box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
             }
 
             .hero__cta-group {
@@ -371,7 +409,7 @@
                 margin: 24px auto 0;
             }
 
-            .hero .container--wide {
+            .hero .container {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -395,14 +433,14 @@
             font-size: 0.7rem;
             letter-spacing: 0.25em;
             text-transform: uppercase;
-            color: var(--gray);
+            color: rgba(240, 245, 234, 0.4);
         }
 
         .scroll-arrow {
             width: 24px;
             height: 24px;
-            border-right: 2px solid var(--red);
-            border-bottom: 2px solid var(--red);
+            border-right: 2px solid #DDF469;
+            border-bottom: 2px solid #DDF469;
             transform: rotate(45deg);
             animation: scrollBounce 1.6s ease-in-out infinite;
         }
@@ -448,41 +486,40 @@
         }
 
         .btn--primary {
-            background: var(--red);
-            color: var(--white);
-            font-size: clamp(0.95rem, 2.2vw, 1.1rem);
-            padding: 10px 16px;
-            margin-top: 24px;
+            background: #DDF469;
+            color: #142034;
+            font-size: clamp(1.1rem, 3vw, 1.35rem);
+            padding: 14px 20px;
         }
 
         .btn--primary:hover {
-            background: var(--red-hot);
+            background: #eef891;
             transform: translateY(-2px);
         }
 
         .btn--outline {
             background: transparent;
-            color: var(--white);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #f0f5ea;
+            border: 1px solid rgba(240, 245, 234, 0.3);
             font-size: clamp(1.1rem, 3vw, 1.35rem);
             padding: 14px 20px;
         }
 
         .btn--outline:hover {
-            border-color: var(--white);
+            border-color: #f0f5ea;
         }
 
         .btn--gold {
-            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
-            color: var(--black);
+            background: linear-gradient(135deg, #DDF469 0%, #DDF469 50%, #DDF469 100%);
+            color: #142034;
             font-size: clamp(1.1rem, 3vw, 1.35rem);
             padding: 14px 20px;
-            box-shadow: 0 0 40px rgba(201, 168, 76, 0.3);
+            box-shadow: 0 0 40px rgba(221, 244, 105, 0.3);
         }
 
         .btn--gold:hover {
             transform: translateY(-3px);
-            box-shadow: 0 0 60px rgba(201, 168, 76, 0.5);
+            box-shadow: 0 0 60px rgba(221, 244, 105, 0.5);
         }
 
         /* ─── SECTION BASE ─── */
@@ -496,7 +533,7 @@
             font-size: 0.72rem !important;
             letter-spacing: 0.35em !important;
             text-transform: uppercase !important;
-            color: var(--red) !important;
+            color: #142034 !important;
             margin-bottom: 16px !important;
             display: block !important;
         }
@@ -506,14 +543,15 @@
             font-weight: 400;
             line-height: 1;
             margin-bottom: 20px;
+            color: #142034;
         }
 
         /* ─── PAIN SECTION ─── */
         .pain {
             padding: 100px 0;
-            background: var(--dark);
-            border-top: 1px solid rgba(214, 40, 40, 0.15);
-            border-bottom: 1px solid rgba(214, 40, 40, 0.15);
+            background: #F5F7F2;
+            border-top: 1px solid #E2E8D9;
+            border-bottom: 1px solid #E2E8D9;
         }
 
         .pain__intro {
@@ -522,11 +560,12 @@
             line-height: 1.4;
             max-width: 660px;
             margin-bottom: 60px;
+            color: #142034;
         }
 
         .pain__intro em {
             font-style: italic;
-            color: var(--white2);
+            color: #3a4a5c;
         }
 
         .pain-grid {
@@ -556,19 +595,19 @@
         }
 
         .pain-item {
-            background: var(--dark2);
+            background: #FFFFFF;
             padding: 32px 24px;
             border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            border: 1px solid #E2E8D9;
+            box-shadow: 0 4px 16px rgba(20, 32, 52, 0.06);
             position: relative;
             transition: all 0.3s ease;
         }
 
         .pain-item:hover {
-            background: var(--dark3);
-            border-color: rgba(214, 40, 40, 0.3);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            background: #FFFFFF;
+            border-color: rgba(221, 244, 105, 0.4);
+            box-shadow: 0 8px 24px rgba(20, 32, 52, 0.1);
             transform: translateY(-4px);
         }
 
@@ -578,16 +617,16 @@
             justify-content: center;
             width: 48px;
             height: 48px;
-            background: rgba(214, 40, 40, 0.1);
+            background: rgba(221, 244, 105, 0.1);
             border-radius: 50%;
             margin: 0 auto 20px;
-            color: var(--red);
+            color: #DDF469;
         }
 
         .pain-item__text {
             font-size: 1.1rem;
             font-weight: 600;
-            color: var(--white);
+            color: #142034;
             line-height: 1.4;
             margin-bottom: 8px;
             text-align: center;
@@ -595,7 +634,7 @@
 
         .pain-item__sub {
             font-size: 0.9rem;
-            color: var(--gray);
+            color: #6b7c8e;
             line-height: 1.5;
             text-align: center;
         }
@@ -603,10 +642,11 @@
         .pain__bridge {
             margin-top: 64px;
             padding: 40px;
-            background: rgba(214, 40, 40, 0.06);
-            border: 1px solid rgba(214, 40, 40, 0.2);
+            background: rgba(221, 244, 105, 0.06);
+            border: 1px solid rgba(221, 244, 105, 0.2);
+            border-radius: 12px;
             font-style: italic;
-            color: var(--white);
+            color: #142034;
             font-size: clamp(1.2rem, 2.5vw, 1.6rem);
             font-weight: 400;
             line-height: 1.6;
@@ -616,7 +656,7 @@
         /* ─── AGITACIÓN ─── */
         .agitation {
             padding: 100px 0;
-            background: var(--black);
+            background: #FFFFFF;
         }
 
         .agitation__statement {
@@ -625,12 +665,12 @@
             font-weight: 400;
             letter-spacing: 0.02em;
             line-height: 1;
-            color: var(--white2);
+            color: #3a4a5c;
             max-width: 720px;
         }
 
         .agitation__statement strong {
-            color: var(--white);
+            color: #142034;
             display: block;
             font-weight: 400;
         }
@@ -645,21 +685,21 @@
 
         .agitation__list li {
             padding: 28px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            border-bottom: 1px solid #E2E8D9;
             display: flex;
             align-items: flex-start;
             gap: 20px;
             font-size: clamp(1rem, 2vw, 1.3rem);
             line-height: 1.6;
             font-weight: 500;
-            color: var(--white2);
+            color: #3a4a5c;
         }
 
         .agitation__list li::before {
             content: '×';
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.6rem;
-            color: var(--red);
+            color: #e04040;
             flex-shrink: 0;
             line-height: 1;
             margin-top: 2px;
@@ -668,7 +708,7 @@
         /* ─── SOLUTION REVEAL ─── */
         .solution {
             padding: 100px 0;
-            background: var(--dark);
+            background: #F5F7F2;
             overflow: hidden;
         }
 
@@ -711,27 +751,27 @@
         }
 
         .benefit-card {
-            background: var(--dark2);
+            background: #FFFFFF;
             padding: 20px 24px;
             border-radius: 16px;
             display: flex;
             align-items: center;
             gap: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.03);
+            border: 1px solid #E2E8D9;
+            box-shadow: 0 4px 16px rgba(20, 32, 52, 0.06);
             transition: transform 0.3s ease, border-color 0.3s;
         }
 
         .benefit-card:hover {
             transform: translateY(-2px);
-            border-color: rgba(214, 40, 40, 0.2);
+            border-color: rgba(221, 244, 105, 0.4);
         }
 
         .benefit-card__icon {
             font-size: 1.2rem;
-            color: var(--gold);
+            color: #DDF469;
             flex-shrink: 0;
-            background: rgba(201, 168, 76, 0.1);
+            background: rgba(221, 244, 105, 0.1);
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -744,7 +784,7 @@
             font-family: 'Barlow', sans-serif;
             font-size: 17px;
             font-weight: 700;
-            color: rgba(255, 255, 255, 0.9);
+            color: #142034;
             line-height: 1.5;
         }
 
@@ -753,23 +793,23 @@
             font-style: italic;
             font-weight: 500;
             font-size: 1.1rem;
-            color: var(--gray);
+            color: #6b7c8e;
             line-height: 1.5;
         }
 
         /* ─── VIDEO SECTION ─── */
         .video-section {
             padding: 80px 0;
-            background: var(--black);
+            background: #FFFFFF;
         }
 
         .video-wrapper {
             position: relative;
-            max-width: 1000px;
+            max-width: 740px;
             margin: 0 auto;
             aspect-ratio: 16/9;
-            background: var(--dark2);
-            border: 1px solid rgba(214, 40, 40, 0.3);
+            background: #142034;
+            border: 1px solid rgba(221, 244, 105, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -781,13 +821,13 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, rgba(214, 40, 40, 0.05), transparent);
+            background: linear-gradient(135deg, rgba(221, 244, 105, 0.05), transparent);
         }
 
         .video-play {
             width: 80px;
             height: 80px;
-            background: var(--red);
+            background: #DDF469;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -798,12 +838,13 @@
         }
 
         .video-play:hover {
-            background: var(--red-hot);
+            background: #eef891;
             transform: scale(1.1);
         }
 
         .video-play svg {
             margin-left: 5px;
+            color: #142034;
         }
 
         .video-label {
@@ -823,7 +864,7 @@
         /* ─── PILLARS ─── */
         .pillars {
             padding: 100px 0;
-            background: var(--dark);
+            background: #FFFFFF;
         }
 
         .pillars__grid {
@@ -834,7 +875,7 @@
         }
 
         .pillar {
-            background: var(--dark2);
+            background: #F5F7F2;
             padding: 44px 36px;
             position: relative;
             overflow: hidden;
@@ -842,7 +883,7 @@
         }
 
         .pillar:hover {
-            background: var(--dark3);
+            background: #EDF0E8;
         }
 
         .pillar::before {
@@ -852,7 +893,7 @@
             right: 16px;
             font-family: 'Bebas Neue', sans-serif;
             font-size: 7rem;
-            color: rgba(214, 40, 40, 0.07);
+            color: rgba(221, 244, 105, 0.1);
             line-height: 1;
             pointer-events: none;
         }
@@ -868,13 +909,13 @@
             font-size: 1.5rem;
             letter-spacing: 0.05em;
             text-transform: uppercase;
-            color: var(--white);
+            color: #142034;
             margin-bottom: 12px;
         }
 
         .pillar__desc {
             font-size: 0.95rem;
-            color: var(--white2);
+            color: #3a4a5c;
             line-height: 1.65;
         }
 
@@ -885,9 +926,9 @@
 
         .pillar__bullets li {
             font-size: 0.88rem;
-            color: var(--gray);
+            color: #6b7c8e;
             padding: 6px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid #E2E8D9;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -895,7 +936,7 @@
 
         .pillar__bullets li::before {
             content: '→';
-            color: var(--red);
+            color: #DDF469;
             font-weight: 700;
             flex-shrink: 0;
         }
@@ -903,12 +944,12 @@
         /* ─── TRANSFORMATION ─── */
         .transformation {
             padding: 100px 0;
-            background: var(--black);
+            background: #F5F7F2;
         }
 
         .transformation__sub {
             font-size: 17px;
-            color: var(--white2);
+            color: #3a4a5c;
             margin-top: 20px;
             margin-bottom: 56px;
             line-height: 1.6;
@@ -928,7 +969,7 @@
 
         .result-card {
             aspect-ratio: 3/4;
-            background: var(--dark2);
+            background: #F5F7F2;
             position: relative;
             overflow: hidden;
         }
@@ -961,12 +1002,12 @@
             font-size: 1rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: var(--white);
+            color: #f0f5ea;
         }
 
         .result-card__result {
             font-size: 0.8rem;
-            color: var(--gold);
+            color: #DDF469;
             margin-top: 2px;
         }
 
@@ -974,7 +1015,7 @@
         .result-placeholder {
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--dark2), var(--dark3));
+            background: linear-gradient(135deg, #F5F7F2, #EDF0E8);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -992,13 +1033,13 @@
             font-size: 0.8rem;
             letter-spacing: 0.15em;
             text-transform: uppercase;
-            color: var(--gray-dark);
+            color: #8899aa;
         }
 
         /* ─── BASE DEL RENDIMIENTO ─── */
         .performance {
             padding: 100px 0;
-            background: var(--dark);
+            background: #FFFFFF;
         }
 
         .performance__grid {
@@ -1022,14 +1063,14 @@
             object-fit: cover;
             object-position: center;
             border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 40px rgba(20, 32, 52, 0.15);
             display: block;
         }
 
         .performance__title {
             font-size: clamp(2.5rem, 4.5vw, 4rem);
             font-family: 'Bebas Neue', sans-serif;
-            color: var(--white);
+            color: #142034;
             line-height: 1;
             letter-spacing: 0.02em;
             margin-bottom: 20px;
@@ -1037,7 +1078,7 @@
 
         .performance__sub {
             font-size: 1.15rem;
-            color: var(--gray);
+            color: #6b7c8e;
             line-height: 1.6;
             margin-bottom: 48px;
         }
@@ -1058,34 +1099,33 @@
         .performance__icon {
             width: 54px;
             height: 54px;
-            background: rgba(18, 18, 20, 0.5);
-            /* Fundo escuro */
+            background: rgba(221, 244, 105, 0.08);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            color: var(--red);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            color: #DDF469;
+            border: 1px solid #E2E8D9;
+            box-shadow: 0 4px 10px rgba(20, 32, 52, 0.06);
         }
 
         .performance__item-title {
             font-size: 1.15rem;
             font-weight: 700;
-            color: var(--white);
+            color: #142034;
             margin-bottom: 6px;
         }
 
         .performance__item-text {
             font-size: 0.95rem;
-            color: var(--gray);
+            color: #6b7c8e;
             line-height: 1.5;
         }
 
         .btn--neon {
             background: #DDF469;
-            color: #0f0f11;
+            color: #0a0f1a;
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.5rem;
             letter-spacing: 0.05em;
@@ -1120,8 +1160,8 @@
         /* ─── COUNTRIES ─── */
         .countries {
             padding: 60px 0;
-            background: var(--black);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: #F5F7F2;
+            border-top: 1px solid #E2E8D9;
         }
 
         .countries__label {
@@ -1154,8 +1194,8 @@
             height: 80px;
             object-fit: cover;
             border-radius: 50%;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+            border: 1px solid #E2E8D9;
+            box-shadow: 0 6px 16px rgba(20, 32, 52, 0.1);
         }
 
         .flag-item span {
@@ -1163,20 +1203,20 @@
             font-family: 'Barlow Condensed', sans-serif;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--gray);
+            color: #6b7c8e;
         }
 
         /* ─── PRICING ─── */
         .pricing {
             padding: 100px 0 120px;
-            background: var(--dark);
+            background: #FFFFFF;
         }
 
         .pricing__intro {
             font-family: 'Barlow', sans-serif;
             font-weight: 400;
             font-size: 17px !important;
-            color: rgba(255, 255, 255, 0.75);
+            color: #6b7c8e;
             margin-top: 20px;
             margin-bottom: 56px;
             text-align: left;
@@ -1191,25 +1231,42 @@
         }
 
         .pricing-card {
-            background: var(--dark2);
+            background: #F5F7F2;
             padding: 40px 32px;
             position: relative;
             transition: background 0.3s;
         }
 
         .pricing-card:hover {
-            background: var(--dark3);
+            background: #EDF0E8;
         }
 
         .pricing-card--featured {
-            background: var(--dark3);
-            border-top: 3px solid var(--gold);
+            background: #142034;
+            border-top: 3px solid #DDF469;
             transform: scaleY(1.02);
             transform-origin: bottom;
+            color: #f0f5ea;
         }
 
         .pricing-card--featured:hover {
-            background: #2a2a2a;
+            background: #1a2d4a;
+        }
+
+        .pricing-card--featured .pricing-plan,
+        .pricing-card--featured .pricing-price,
+        .pricing-card--featured .pricing-installment,
+        .pricing-card--featured .pricing-per,
+        .pricing-card--featured .pricing-features li {
+            color: rgba(240, 245, 234, 0.85);
+        }
+
+        .pricing-card--featured .pricing-price {
+            color: #f0f5ea;
+        }
+
+        .pricing-card--featured .pricing-installment strong {
+            color: #f0f5ea;
         }
 
         .pricing-badge {
@@ -1218,8 +1275,8 @@
             font-size: 0.7rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            background: var(--gold);
-            color: var(--black);
+            background: #DDF469;
+            color: #142034;
             display: inline-block;
             padding: 4px 10px;
             margin-bottom: 20px;
@@ -1231,7 +1288,7 @@
             font-size: 1rem;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--gray);
+            color: #6b7c8e;
             margin-bottom: 8px;
         }
 
@@ -1239,13 +1296,13 @@
             font-family: 'Bebas Neue', sans-serif;
             font-size: 4.5rem;
             line-height: 1;
-            color: var(--white);
+            color: #142034;
             margin-bottom: 4px;
         }
 
         .pricing-price span {
             font-size: 2rem;
-            color: var(--gray);
+            color: #6b7c8e;
             vertical-align: top;
             margin-top: 12px;
             display: inline-block;
@@ -1253,17 +1310,17 @@
 
         .pricing-installment {
             font-size: 0.88rem;
-            color: var(--gray);
+            color: #6b7c8e;
             margin-bottom: 28px;
         }
 
         .pricing-installment strong {
-            color: var(--white2);
+            color: #3a4a5c;
         }
 
         .pricing-per {
             font-size: 0.8rem;
-            color: var(--white);
+            color: #142034;
             margin-bottom: 28px;
         }
 
@@ -1274,9 +1331,9 @@
 
         .pricing-features li {
             font-size: 0.9rem;
-            color: var(--white2);
+            color: #3a4a5c;
             padding: 9px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid #E2E8D9;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -1284,43 +1341,50 @@
 
         .pricing-features li::before {
             content: '✓';
-            color: var(--red);
+            color: #DDF469;
             font-weight: 700;
             flex-shrink: 0;
         }
 
+        .pricing-card--featured .pricing-features li {
+            border-bottom-color: rgba(255, 255, 255, 0.08);
+        }
+
         .pricing-card--featured .pricing-features li::before {
-            color: var(--gold);
+            color: #DDF469;
         }
 
         /* ─── GUARANTEE ─── */
         .guarantee {
             padding: 80px 0;
-            background: var(--black);
+            background: #F5F7F2;
         }
 
         .guarantee__box {
             max-width: 680px;
             margin: 0 auto;
-            border: 1px solid rgba(201, 168, 76, 0.3);
+            border: 1px solid rgba(221, 244, 105, 0.3);
             padding: 56px 48px;
             text-align: center;
             position: relative;
+            background: #FFFFFF;
+            border-radius: 16px;
         }
 
         .guarantee__box::before {
             content: '';
             position: absolute;
             inset: -1px;
-            background: linear-gradient(135deg, rgba(201, 168, 76, 0.1), transparent);
+            background: linear-gradient(135deg, rgba(221, 244, 105, 0.05), transparent);
             pointer-events: none;
+            border-radius: 16px;
         }
 
         .guarantee__badge {
             width: 80px;
             height: 80px;
-            background: rgba(201, 168, 76, 0.1);
-            border: 2px solid var(--gold);
+            background: rgba(221, 244, 105, 0.08);
+            border: 2px solid #DDF469;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1332,11 +1396,12 @@
         .guarantee__title {
             font-size: clamp(1.8rem, 4vw, 2.6rem);
             margin-bottom: 16px;
+            color: #142034;
         }
 
         .guarantee__text {
             font-size: 1rem;
-            color: var(--white2);
+            color: #3a4a5c;
             line-height: 1.7;
             max-width: 480px;
             margin: 0 auto 24px;
@@ -1344,7 +1409,7 @@
 
         .guarantee__footer {
             font-size: 0.8rem;
-            color: var(--gray);
+            color: #6b7c8e;
             font-style: italic;
         }
 
@@ -1353,7 +1418,7 @@
         /* ─── FAQ ─── */
         .faq {
             padding: 100px 0;
-            background: var(--dark);
+            background: #FFFFFF;
         }
 
         .faq__grid {
@@ -1364,7 +1429,7 @@
         }
 
         .faq-item {
-            background: var(--dark2);
+            background: #F5F7F2;
         }
 
         .faq-item__q {
@@ -1378,7 +1443,7 @@
             justify-content: space-between;
             gap: 20px;
             text-align: left;
-            color: var(--white);
+            color: #142034;
             font-family: 'Barlow', sans-serif;
             font-size: 1.05rem;
             font-weight: 600;
@@ -1386,19 +1451,19 @@
         }
 
         .faq-item__q:hover {
-            background: var(--dark3);
+            background: #EDF0E8;
         }
 
         .faq-item__icon {
             width: 24px;
             height: 24px;
-            border: 1px solid rgba(214, 40, 40, 0.5);
+            border: 1px solid rgba(221, 244, 105, 0.5);
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
-            color: var(--red);
+            color: #DDF469;
             transition: transform 0.3s;
         }
 
@@ -1419,9 +1484,9 @@
         .faq-item__a-inner {
             padding: 0 28px 24px;
             font-size: 0.96rem;
-            color: var(--white2);
+            color: #3a4a5c;
             line-height: 1.7;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid #E2E8D9;
             padding-top: 20px;
             margin-top: -4px;
         }
@@ -1429,7 +1494,7 @@
         /* ─── TRANSFORMATION ─── */
         .transformation {
             padding: 100px 0;
-            background: var(--black);
+            background: #F5F7F2;
         }
 
         .results-grid {
@@ -1440,18 +1505,18 @@
         }
 
         .result-card {
-            background: var(--dark2);
+            background: #FFFFFF;
             border-radius: 12px;
             overflow: hidden;
             position: relative;
-            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(214, 40, 40, 0.2);
+            box-shadow: 0 8px 24px rgba(20, 32, 52, 0.08);
+            border: 1px solid #E2E8D9;
             transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
 
         .result-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 16px 32px rgba(20, 32, 52, 0.15);
         }
 
         .result-card img {
@@ -1467,7 +1532,7 @@
             left: 0;
             bottom: 0;
             width: 100%;
-            background: linear-gradient(to top, rgba(18, 18, 20, 0.95) 0%, rgba(18, 18, 20, 0.7) 40%, transparent 100%);
+            background: linear-gradient(to top, rgba(13, 20, 37, 0.95) 0%, rgba(13, 20, 37, 0.7) 40%, transparent 100%);
             padding: 40px 24px 24px;
             display: flex;
             align-items: flex-end;
@@ -1521,14 +1586,14 @@
         /* ─── DIVIDER ─── */
         .divider {
             height: 1px;
-            background: linear-gradient(to right, transparent, rgba(214, 40, 40, 0.3), transparent);
+            background: linear-gradient(to right, transparent, #E2E8D9, transparent);
         }
 
         /* ─── STAT BAR ─── */
         .stat-bar {
-            background: rgba(214, 40, 40, 0.08);
-            border-top: 1px solid rgba(214, 40, 40, 0.15);
-            border-bottom: 1px solid rgba(214, 40, 40, 0.15);
+            background: #142034;
+            border-top: none;
+            border-bottom: none;
             padding: 36px 0;
         }
 
@@ -1543,7 +1608,7 @@
         .stat {
             text-align: center;
             padding: 16px 48px;
-            border-right: 1px solid rgba(255, 255, 255, 0.07);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .stat:last-child {
@@ -1553,7 +1618,7 @@
         .stat__num {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 3rem;
-            color: var(--red);
+            color: #DDF469;
             line-height: 1;
         }
 
@@ -1562,7 +1627,7 @@
             font-size: 0.75rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--gray);
+            color: rgba(240, 245, 234, 0.5);
             margin-top: 6px;
         }
 
@@ -1611,7 +1676,6 @@
 
             .pricing-grid {
                 grid-template-columns: 1fr;
-                padding: 0 16px;
             }
 
             .pricing-card--featured {
@@ -1622,8 +1686,6 @@
                 text-align: center;
                 margin-left: auto;
                 margin-right: auto;
-                width: 100%;
-                max-width: 100%;
             }
 
             .pricing-card ul {
@@ -1644,34 +1706,15 @@
             }
 
             .results-grid {
-                grid-template-columns: 1fr;
-                gap: 24px;
-                padding: 0 16px;
-            }
-
-            .result-card {
-                border-radius: 12px;
-            }
-
-            .stat-bar__inner {
-                flex-wrap: nowrap;
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .stat {
-                padding: 12px 10px;
-                flex: 1;
+                padding: 16px 24px;
             }
 
-            .stat__num {
-                font-size: 1.8rem;
-            }
-
-            .stat__label {
-                font-size: 0.55rem;
-                letter-spacing: 0.1em;
-            }
-
-            .stat:last-child {
+            .stat:nth-child(even),
+            .stat:nth-child(2) {
                 border-right: none;
             }
 
@@ -1710,7 +1753,7 @@
         /* ─── FINAL CTA ─── */
         .final-cta {
             padding: 120px 0;
-            background: linear-gradient(to bottom, var(--black), var(--dark));
+            background: #142034;
             text-align: center;
         }
 
@@ -1721,24 +1764,24 @@
             letter-spacing: 0.02em;
             line-height: 1;
             margin-bottom: 24px;
-            color: var(--white);
+            color: #f0f5ea;
         }
 
         .final-cta__sub {
             font-size: 1.15rem;
-            color: var(--white2);
+            color: rgba(240, 245, 234, 0.7);
             margin-bottom: 40px;
         }
 
         .final-cta__micro {
             font-size: 0.85rem;
-            color: var(--gray);
+            color: rgba(240, 245, 234, 0.4);
             margin-top: 24px;
         }
 
         /* ─── FOOTER ─── */
         footer {
-            background: var(--dark);
+            background: #0e1a2e;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             padding: 40px 24px;
             text-align: center;
@@ -1748,17 +1791,17 @@
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.6rem;
             letter-spacing: 0.05em;
-            color: var(--white2);
+            color: rgba(240, 245, 234, 0.7);
             margin-bottom: 16px;
         }
 
         .footer__brand span {
-            color: var(--red);
+            color: #DDF469;
         }
 
         .footer__copy {
             font-size: 0.78rem;
-            color: var(--gray-dark);
+            color: rgba(240, 245, 234, 0.4);
             line-height: 1.6;
             max-width: 600px;
             margin: 0 auto;
@@ -1766,17 +1809,17 @@
 
         .footer__disclaimer {
             font-size: 0.7rem;
-            color: var(--gray-dark);
+            color: rgba(240, 245, 234, 0.3);
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             line-height: 1.5;
             max-width: 800px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        /* TASK: OVERRIDE 3 SPECIFIC TITLES TO MATCH "Un Sistema con 3 Pilares" */
+        /* TASK: OVERRIDE 3 SPECIFIC TITLES TO MATCH "El Sistema de 3 Pilares" */
         .agitation__statement,
         .solution .section-title,
         .performance__title {
@@ -1795,7 +1838,7 @@
             font-weight: 500 !important;
             font-size: 0.95rem !important;
             line-height: 1.15 !important;
-            color: rgba(253, 252, 252, 0.75) !important;
+            color: #3a4a5c !important;
         }
 
 
@@ -1805,7 +1848,7 @@
             font-family: 'Barlow', sans-serif !important;
             font-weight: 400 !important;
             font-size: 15.5px !important;
-            color: rgba(255, 255, 255, 0.75) !important;
+            color: #6b7c8e !important;
         }
 
         .align-left-desktop {
@@ -1829,23 +1872,21 @@
   ═══════════════════════════════════════════ -->
     <section class="hero">
         <div class="hero__bg"></div>
-        <div class="container--wide">
+        <div class="container">
             <span class="hero__tag">Para hombres de 35+ años</span>
             <h1 class="hero__headline type-title">
                 Eso que eras <em>todavía está ahí.</em><br>
-                Sólo necesita un método.
+                Solo necesita estructura.
             </h1>
             <p class="hero__sub type-desc">
-                Dejaste de entrenar. La vida pasó. El trabajo, la familia, tu rutina.
+                Dejaste de entrenar. La vida pasó. El trabajo, la familia, el cansancio.
             </p>
-        </div>
-        <div class="video-wrapper" style="position:relative; z-index:1; animation:fadeUp 1s ease 0.3s both;">
-            <iframe src="https://www.youtube.com/embed/Umj3SHH425k?rel=0&modestbranding=1"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
-            </iframe>
-        </div>
-        <div class="container--wide">
+            <div class="video-wrapper"
+                style="margin: 40px 0 0 0; position: relative; z-index: 1; animation: fadeUp 1s ease 0.3s both;">
+                <iframe src="https://www.youtube.com/embed/Umj3SHH425k?rel=0&modestbranding=1" allow="encrypted-media"
+                    allowfullscreen
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:inherit;border:none;"></iframe>
+            </div>
             <div class="hero__cta-group">
                 <a href="#precio" class="btn btn--primary">Quiero retomar el control <span
                         class="btn__arrow">→</span></a>
@@ -1890,8 +1931,8 @@
         <div class="container--wide">
             <span class="section-label reveal">El problema real</span>
             <p class="pain__intro type-desc reveal">
-                No es que no tenés disciplina.<br />
-                <em>Es que nadie te dió una estructura que funcione para la vida que tenés hoy.</em>
+                No es que perdiste la disciplina.<br />
+                <em>Es que nadie te dio una estructura que funcione con la vida que tenés.</em>
             </p>
 
             <div class="pain-grid reveal">
@@ -1905,8 +1946,9 @@
                         </svg>
                     </div>
                     <p class="pain-item__text type-desc">Empezaste mil veces. Duró tres semanas.</p>
-                    <p class="pain-item__sub type-bullet">La motivación de enero que se fue en febrero. Y este ciclo se
-                        repite hace años y cada vez que intentas te pesa más.</p>
+                    <p class="pain-item__sub type-bullet">Motivación de enero que se evapora en febrero. El ciclo se
+                        repite hace
+                        años y cada intento fallido te pesa más que el anterior.</p>
                 </div>
                 <div class="pain-item">
                     <div class="pain-item__icon">
@@ -1932,8 +1974,9 @@
                         </svg>
                     </div>
                     <p class="pain-item__text type-desc">Te mirás al espejo y no te reconocés.</p>
-                    <p class="pain-item__sub type-bullet">Tenés más panza y menos músculo. Pero lo que más te duele no
-                        es el físico - es saber que dejaste de ser cuidarte.</p>
+                    <p class="pain-item__sub type-bullet">Ganaste barriga, perdiste músculo. Y lo que más duele no es el
+                        físico — es
+                        saber que te fuiste dejando para después sin darte cuenta.</p>
                 </div>
                 <div class="pain-item">
                     <div class="pain-item__icon">
@@ -1945,17 +1988,17 @@
                             <line x1="15" y1="9" x2="15.01" y2="9"></line>
                         </svg>
                     </div>
-                    <p class="pain-item__text type-desc">Probaste de todo y nada y eso te desanima.</p>
+                    <p class="pain-item__text type-desc">Probar todo sin resultados te desgasta.</p>
                     <p class="pain-item__sub type-bullet">Dietas raras, rutinas de YouTube, suplementos carísimos. Nada
-                        funciona porque nada de eso está diseñado para un hombre con + de 30 años con una vida real.</p>
+                        funciona
+                        porque nada está diseñado para un hombre de 35+ con vida real.</p>
                 </div>
             </div>
 
             <div class="pain__bridge reveal"
-                style="font-family: 'Barlow', sans-serif; font-weight: 00; font-size: 22px; color: #ffffff; font-style: italic; line-height: 1.4; text-transform: none; letter-spacing: normal;">
-                &ldquo;El problema no sos vos, el problema es que seguiste buscando
-                soluciones para personas con el cuerpo, y el tiempo de 20 años pero hoy vos ya pasaste los 30 años.
-                <strong> Eso termina acá!</strong>&rdquo;
+                style="font-family: 'Barlow', sans-serif; font-weight: 00; font-size: 22px; color: #142034; font-style: italic; line-height: 1.4; text-transform: none; letter-spacing: normal;">
+                &ldquo;El problema no sos vos, el problema es que seguiste buscando soluciones de 25 años con el cuerpo,
+                el tiempo y la cabeza de los 35+. <strong> Eso termina acá!</strong>&rdquo;
             </div>
         </div>
     </section>
@@ -1967,18 +2010,16 @@
         <div class="container">
             <span class="section-label reveal">Lo que está en juego</span>
             <p class="agitation__statement type-title reveal">
-                CADA DIA QUE PASAS SIN HACER NADA TE ESTÁ COSTANDO CARO
+                Cada día que pasa sin hacer nada tiene un costo
             </p>
 
             <ul class="agitation__list type-bullet reveal">
                 <li>La energía que perdiste no vuelve sola y cada año que pasa, cuesta el doble recuperarla.</li>
-                <li>Tu confianza depende de cómo te sentís con tu propio cuerpo. Y eso te afecta todo: tu trabajo, tu
-                    pareja, tu rutina.</li>
+                <li>Tu autoconfianza depende de cómo te sentís en tu propio cuerpo. Eso afecta todo: el trabajo, la
+                    pareja, cómo liderás.</li>
                 <li>Los hijos te ven. Y en algún momento te van a preguntar por qué no podés correr con ellos.</li>
-                <li>Vos decís que salud es importante. Pero sabes que estás haciendo muy poco o nada cada mes que pasa.
-                </li>
-                <li>Ese: "mañana empiezo" hace diez años que venís con el mismo verso.
-                    Y ya viste como estás.</li>
+                <li>La salud es un capital. Y vos la estás dejando depreciar mes a mes sin hacer nada.</li>
+                <li>El "mañana empiezo" tiene diez años de antigüedad. Y sabés exactamente a dónde lleva.</li>
             </ul>
         </div>
     </section>
@@ -1989,8 +2030,8 @@
     <section class="solution">
         <div class="container--wide">
             <span class="section-label reveal">La solución</span>
-            <h2 class="section-title type-title reveal">VAS A RECIBIR UN PASO A PASO<span
-                    class="text-red">ESTRUCTURADO</span> con:</h2>
+            <h2 class="section-title type-title reveal">Vas a recibir un sistema de <span
+                    class="text-red">entrenamientos</span> con:</h2>
             <div class="solution__grid reveal">
                 <!-- COLUNA ESQUERDA -->
                 <div class="solution__image-col">
@@ -2063,19 +2104,20 @@
     <section class="pillars">
         <div class="container">
             <span class="section-label reveal">Lo que vas a recibir</span>
-            <h2 class="section-title type-title reveal">Un Sistema con<span class="text-red">3 Pilares</span></h2>
+            <h2 class="section-title type-title reveal">El Sistema de <span class="text-red">3 Pilares</span></h2>
 
             <div class="pillars__grid reveal">
                 <div class="pillar" data-num="01">
                     <div class="pillar__icon">🏋️</div>
                     <div class="pillar__title type-desc" style="font-weight: 700;">Entrenamiento con Sentido</div>
-                    <p class="pillar__desc type-desc">Cada estapa está estructurada para que recuperes tu fuerza,
-                        elimines el exceso de grasa para que vuelvas a sentirte bien con tu cuerpo de nuevo.</p>
+                    <p class="pillar__desc type-desc">Fases estructuradas para
+                        recuperar fuerza, eliminar grasa y volver te a sentir bien en tu propio cuerpo. Sin rutinas
+                        imposibles ni métodos de 22 años.</p>
                     <ul class="pillar__bullets type-bullet">
                         <li>Progresión por niveles — empezás donde estás</li>
                         <li>Separado por fuerza, recomposición y definición</li>
                         <li>Adaptable: pesas o peso corporal</li>
-                        <li>Sesiones de 10-30 minutos por día</li>
+                        <li>Sesiones de 40–60 minutos reales</li>
                     </ul>
                 </div>
                 <div class="pillar" data-num="02">
@@ -2086,7 +2128,7 @@
                     <ul class="pillar__bullets type-bullet">
                         <li>Sin conteo de calorías obsesivo</li>
                         <li>Múltiples opciones de alimentación</li>
-                        <li>Adaptado al presupuesto y la cocina de cada alumno</li>
+                        <li>Adaptado al presupuesto y la cocina de Latam</li>
                         <li>Apoyo para quienes comen afuera frecuente</li>
                     </ul>
                 </div>
@@ -2124,21 +2166,39 @@
             <div class="results-grid reveal">
                 <div class="result-card">
                     <img src="images/antesxdepois1.jpeg" alt="Transformación 1" />
+                    <div class="result-card__overlay">
+                        <div class="result-card__result">−11 kg en 84 días</div>
+                    </div>
                 </div>
                 <div class="result-card">
                     <img src="images/antesxdepois2.jpeg" alt="Transformación 2" />
+                    <div class="result-card__overlay">
+                        <div class="result-card__result">−9 kg en 70 días</div>
+                    </div>
                 </div>
                 <div class="result-card">
                     <img src="images/antesxdepois3.jpeg" alt="Transformación 3" />
+                    <div class="result-card__overlay">
+                        <div class="result-card__result">Recomposición física</div>
+                    </div>
                 </div>
                 <div class="result-card">
                     <img src="images/antesxdepois4.jpeg" alt="Transformación 4" />
+                    <div class="result-card__overlay">
+                        <div class="result-card__result">−8 kg en 60 días</div>
+                    </div>
                 </div>
                 <div class="result-card">
                     <img src="images/antesxdepois5.jpeg" alt="Transformación 5" />
+                    <div class="result-card__overlay">
+                        <div class="result-card__result">+8 kg de músculo</div>
+                    </div>
                 </div>
                 <div class="result-card">
                     <img src="images/antesxdepois6.jpeg" alt="Transformación 6" />
+                    <div class="result-card__overlay">
+                        <div class="result-card__result">−12 kg en 90 días</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2303,7 +2363,7 @@
                     <div class="pricing-badge">⭐ Más elegido</div>
                     <div class="pricing-plan">Plan 6 meses</div>
                     <div class="pricing-price"><span>$</span>47</div>
-                    <p class="pricing-installment">O 3 cuotas de <strong>$16,8</strong></p>
+                    <p class="pricing-installment">O 3 cuotas de <strong>$15,66</strong></p>
                     <p class="pricing-per">Solo $7,83 por mes</p>
                     <ul class="pricing-features">
                         <li>Todo del plan 60 días</li>
@@ -2320,10 +2380,10 @@
 
                 <!-- PLAN ANUAL -->
                 <div class="pricing-card">
-                    <div class="pricing-badge" style="background:var(--red);color:var(--white);">Mejor valor</div>
+                    <div class="pricing-badge" style="background:#DDF469;color:#142034;">Mejor valor</div>
                     <div class="pricing-plan">Plan Anual</div>
                     <div class="pricing-price"><span>$</span>67</div>
-                    <p class="pricing-installment">O 3 cuotas de <strong>$24,04</strong></p>
+                    <p class="pricing-installment">O 3 cuotas de <strong>$22,33</strong></p>
                     <p class="pricing-per">Solo $5,50 por mes — el precio más bajo</p>
                     <ul class="pricing-features">
                         <li>Todo del plan 6 meses</li>
@@ -2355,7 +2415,7 @@
                     estructura completa. Si sentís que no es para vos, te devolvemos cada centavo. Sin vueltas. Sin
                     cuestionamientos.
                 </p>
-                <p class="guarantee__text" style="font-weight:600; color: var(--white);">
+                <p class="guarantee__text" style="font-weight:600; color: #142034;">
                     El único riesgo real es seguir haciendo lo mismo y esperar resultados distintos.
                 </p>
                 <p class="guarantee__footer">Procesado a través de Hotmart — plataforma segura con protección de datos
@@ -2411,7 +2471,7 @@
                     </button>
                     <div class="faq-item__a">
                         <div class="faq-item__a-inner">
-                            Las sesiones están diseñadas para durar entre 10 y 30 minutos. Tres o cuatro veces por
+                            Las sesiones están diseñadas para durar entre 40 y 60 minutos. Tres o cuatro veces por
                             semana es suficiente para ver resultados. El método se adapta a tu agenda, no al revés.
                         </div>
                     </div>
@@ -2485,7 +2545,7 @@
             <h2 class="final-cta__headline type-title reveal" style="margin-bottom: 24px;">
                 Dejaste de ser prioridad<br /><span class="text-red">demasiado tiempo.</span>
             </h2>
-            <p class="final-cta__sub type-desc reveal" style="margin-bottom: 40px; color: var(--white2);">
+            <p class="final-cta__sub type-desc reveal" style="margin-bottom: 40px; color: rgba(240, 245, 234, 0.7);">
                 La estructura está acá. El método existe. La decisión es tuya y solo tuya.
             </p>
             <div class="reveal">
@@ -2545,3 +2605,5 @@
         });
     </script>
 </body>
+
+</html>
